@@ -73,10 +73,10 @@
                   @foreach ($list_tunggakan as $l)
                     <tr style="font-size : 12px">
                       <td>
-                        @if (!$l->sisa_waktu)
+                        @if (is_null($l->sisa_waktu))
                           No Data
                         @else
-                          {{ $l->sisa_waktu }} Hari
+                          {{ $l->sisa_waktu }}
                         @endif
                       </td>
                       <th>{{ $l->np2 }}</th>
@@ -132,6 +132,9 @@
     <script>
       $(document).ready(function() {
         $('#tabel1').DataTable({
+          order: [
+            [0, 'asc']
+          ],
           scrollX: true,
           dom: 'Blfrtip',
           buttons: [

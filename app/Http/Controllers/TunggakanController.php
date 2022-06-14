@@ -47,6 +47,10 @@ class TunggakanController extends Controller
             'tgl_jt' => 'required|min:2|max:2',
             'bln_jt' => 'required|min:2|max:2',
             'thn_jt' => 'required|min:4|max:4',
+            'nd_penunjukan' => 'required',
+            'tgl_nd' => 'required|min:2|max:2',
+            'bln_nd' => 'required|min:2|max:2',
+            'thn_nd' => 'required|min:4|max:4',
             'fpp1' => 'required',
             'fpp2' => 'required',
             'fpp3' => 'required',
@@ -55,25 +59,31 @@ class TunggakanController extends Controller
         ]);
 
         $jt = $request->thn_jt.'-'.$request->bln_jt.'-'.$request->tgl_jt;
+        $nd = $request->thn_nd.'-'.$request->bln_nd.'-'.$request->tgl_nd;
         $delete_pemeriksa_lama=Pemeriksa::where('np2',$request->np2)->delete();
-        $delete_progress_lama=Progrespemeriksaan::where('np2',$request->np2)->delete();
         // echo $jt;
         $simpan_data_pemeriksa = Pemeriksa::create([
             'np2' => $request->np2,
+            'nd_penunjukan' => $request->nd_penunjukan,
+            'tgl_nd_penunjukan' => $nd,
             'fpp1' => $request->fpp1,
             'fpp2' => $request->fpp2,
             'fpp3' => $request->fpp3,
             'fpp4' => $request->fpp4,
             'pic' => $request->pic,
-        ]);
-
-        $simpan_data_progress = Progrespemeriksaan::create([
-            'np2' => $request->np2,
             'jt' => $jt,
-            'progress' => $request->progress
+            'progress' => $request->progress,
+            'nilai_lb' => $request->nilai_lb,
         ]);
 
-        return redirect('/tunggakan')->with('success', 'Input/Edit data tunggakan berhasil!!');
+
+        if(!$simpan_data_pemeriksa){
+            return back()->with('inputError','Gagal Update Data, Periksa Kembali Inputan Anda');
+        } else {
+            return redirect('/tunggakan')->with('success', 'Input/Edit data tunggakan berhasil!!');
+        }
+
+       
     }
 
     /**
@@ -127,5 +137,33 @@ class TunggakanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function jt()
+    {
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
+        $list_tunggakan = View_tunggakan_all::where('sp2','!=','')->where('sisa_waktu','<','14')->orderBy('sisa_waktu','asc')->get();
+        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->count();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function np2belumterbit()
+    {
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
+        $list_tunggakan = View_tunggakan_all::where('sp2','=','')->orderBy('sisa_waktu','asc')->get();
+        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->count();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat'));
     }
 }

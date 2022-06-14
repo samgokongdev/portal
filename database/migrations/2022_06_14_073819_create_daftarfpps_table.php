@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProgrespemeriksaansTable extends Migration
+class CreateDaftarfppsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateProgrespemeriksaansTable extends Migration
      */
     public function up()
     {
-        Schema::create('progrespemeriksaans', function (Blueprint $table) {
+        Schema::create('daftarfpps', function (Blueprint $table) {
             $table->id();
-            $table->string('np2');
-            $table->string('progress')->nullable();
-            $table->date('jt')->nullable();
+            $table->string('nip');
+            $table->string('nama_fpp');
+            $table->string('posisi');
+            $table->string('kelompok');
+            $table->string('tim');
+            $table->string('kode_tim');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateProgrespemeriksaansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('progrespemeriksaans');
+        Schema::dropIfExists('daftarfpps');
     }
 }
