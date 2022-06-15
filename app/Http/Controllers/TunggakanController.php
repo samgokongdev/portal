@@ -20,8 +20,9 @@ class TunggakanController extends Controller
         $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
         $list_tunggakan = View_tunggakan_all::where('sp2','!=','')->orderBy('sisa_waktu','asc')->get();
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->count();
-        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat'));
+        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
+        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
     /**
@@ -74,6 +75,8 @@ class TunggakanController extends Controller
             'jt' => $jt,
             'progress' => $request->progress,
             'nilai_lb' => $request->nilai_lb,
+            'omset' => $request->omset,
+            'potensi' => $request->potensi,
         ]);
 
 
@@ -149,8 +152,9 @@ class TunggakanController extends Controller
         $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
         $list_tunggakan = View_tunggakan_all::where('sp2','!=','')->where('sisa_waktu','<','14')->orderBy('sisa_waktu','asc')->get();
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->count();
-        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat'));
+        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
+        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
     /**
@@ -163,7 +167,8 @@ class TunggakanController extends Controller
         $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
         $list_tunggakan = View_tunggakan_all::where('sp2','=','')->orderBy('sisa_waktu','asc')->get();
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->count();
-        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat'));
+        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
+        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 }

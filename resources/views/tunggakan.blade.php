@@ -14,6 +14,7 @@
         <div class="stat-title font-bold">Jumlah Tunggakan</div>
         <div class="stat-value">{{ $rekap_tunggakan }} SP2</div>
         <div class="stat-desc font-semibold">Jumlah Tunggakan Pemeriksaan</div>
+        <a class="btn btn-sm btn-success" href="{{ route('tunggakan.index') }}">Lihat Detail</a>
       </div>
     </div>
 
@@ -22,6 +23,7 @@
         <div class="stat-title">NP2 Belum SP2</div>
         <div class="stat-value">{{ $np2_belum_sp2 }} NP2</div>
         <div class="stat-desc">Jumlah NP2 Belum ada SP2</div>
+        <a class="btn btn-sm btn-success" href="{{ route('tunggakan.np2belumterbit') }}">Lihat Detail</a>
       </div>
     </div>
 
@@ -30,6 +32,7 @@
         <div class="stat-title">Tunggakan JT < 14 Hari</div>
             <div class="stat-value">{{ $pemeriksaan_jt_dekat }} SP2</div>
             <div class="stat-desc">Jumlah SP2 dengan JT kurang dari 14 Hari</div>
+            <a class="btn btn-sm btn-success" href="{{ route('tunggakan.jt') }}">Lihat Detail</a>
         </div>
       </div>
 
@@ -47,8 +50,25 @@
       </div>
     @endif
 
+    @if ($whatsapp)
+      <?php $number = 1; ?>
+      <div tabindex="0" class="collapse border border-base-300 bg-base-100 rounded-box">
+        <div class="collapse-title text-sm font-medium -mb-3">
+          Broadcast Message (Klik di area lain untuk menyembunyikan):
+        </div>
+        <div class="collapse-content">
+          <div class="mockup-code">
+            @foreach ($whatsapp as $w)
+              <pre data-prefix="$"><code>*{{ $number }}. {{ $w->nama_wp }}* ({{ $w->periode_1 }} - {{ $w->periode_2 }}) => JATUH TEMPO {{ date('d-m-Y', strtotime($w->jt)) }} ( {{ $w->sisa_waktu }} Hari Lagi)</code></pre>
+              <?php $number++; ?>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    @endif
+
     <div class="w-full mt-2 pt-3">
-      <div class="card w-full bg-gray-100 text-primary-content">
+      <div class="card w-full bg-gray-50 text-primary-content">
         <div class="card-body">
           <h2 class="card-title font-bold">Daftar Tunggakan Pemeriksaan</h2>
           <div class="card-body bg-white rounded-lg">
@@ -132,12 +152,11 @@
     <script>
       $(document).ready(function() {
         $('#tabel1').DataTable({
-          order: [
-            [0, 'asc']
-          ],
+          order: false,
           scrollX: true,
           dom: 'Blfrtip',
           buttons: [
+            'copy',
             'csvHtml5',
           ]
         });

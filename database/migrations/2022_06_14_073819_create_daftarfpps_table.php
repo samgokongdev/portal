@@ -19,8 +19,7 @@ class CreateDaftarfppsTable extends Migration
             $table->string('nama_fpp');
             $table->string('posisi');
             $table->string('kelompok');
-            $table->string('tim');
-            $table->string('kode_tim');
+            $table->string('kode_fpp');
             $table->timestamps();
         });
     }

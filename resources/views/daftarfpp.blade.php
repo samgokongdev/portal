@@ -9,18 +9,18 @@
   </div>
 
   <div class="grid grid-cols-3 gap-4 mb-5">
-    <div class="stats bg-primary text-primary-content shadow">
+    <div class="stats shadow">
       <div class="stat">
         <div class="stat-title font-bold">Jumlah Kelompok</div>
-        <div class="stat-value">5 Kelompok</div>
-        <div class="stat-desc font-semibold">Jumlah total kelompok pemeriksa</div>
+        <div class="stat-value">{{ $jumlah_kelompok }} Kelompok</div>
+        <div class="stat-desc">Jumlah total kelompok pemeriksa</div>
       </div>
     </div>
 
     <div class="stats shadow">
       <div class="stat">
-        <div class="stat-title">FPP Non SPV</div>
-        <div class="stat-value">27 Orang</div>
+        <div class="stat-title font-bold">FPP Non SPV</div>
+        <div class="stat-value">{{ $spv_non_fpp }} Orang</div>
         <div class="stat-desc">Jumlah FPP Non Supervisor</div>
       </div>
     </div>
@@ -43,6 +43,7 @@
     <div class="card w-full bg-gray-100 text-primary-content">
       <div class="card-body">
         <h2 class="card-title font-bold">Daftar Fungsional Pemeriksa Pajak</h2>
+        <a class="btn btn-block" href="{{ route('daftarfpp.create') }}">Tambah</a>
         <div class="card-body bg-white rounded-lg">
           <div class="overflow-x-auto">
             <table class="table table-zebra w-full" id="tabel1" style="width: 100%">
@@ -50,35 +51,28 @@
               <thead>
                 <tr>
                   <th>KELOMPOK</th>
-                  <th>TIM</th>
+                  <th>KODE FPP</th>
                   <th>NAMA</th>
                   <th>POSISI</th>
-                  <th>KODE FPP</th>
                 </tr>
               </thead>
               <tbody>
-                <!-- row 1 -->
-                <tr>
-                  <th>1</th>
-                  <td>5.2</td>
-                  <td>JACKSON</td>
-                  <td>KETUA TIM</td>
-                  <td>5.2.0</td>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <td>5.0</td>
-                  <td>MICHAEL</td>
-                  <td>SUPERVISOR</td>
-                  <td>5.0.0</td>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <td>5.2.1</td>
-                  <td>LEE</td>
-                  <td>ANGGOTA 1</td>
-                  <td>5.2.1</td>
-                </tr>
+                @foreach ($fpp as $f)
+                  <tr>
+                    <th>{{ $f->kelompok }}</th>
+                    <td>{{ $f->kode_fpp }}</td>
+                    <td>{{ $f->nama_fpp }}</td>
+                    <td>
+                      @if ($f->posisi == 0)
+                        SUPERVISOR
+                      @elseif($f->posisi == 1)
+                        KETUA TIM
+                      @else
+                        ANGGOTA
+                      @endif
+                    </td>
+                  </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -93,7 +87,7 @@
     $(document).ready(function() {
       $('#tabel1').DataTable({
         order: [
-          [0, 'asc']
+          [1, 'asc']
         ],
         scrollX: true,
         dom: 'Blfrtip',

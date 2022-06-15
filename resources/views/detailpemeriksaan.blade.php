@@ -84,6 +84,18 @@
             </label>
             <input type="number" class="input input-bordered input-sm" name="nilai_lb" value="{{ $data->nilai_lb }}" />
           </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Omset</span>
+            </label>
+            <input type="number" class="input input-bordered input-sm" name="omset" value="{{ $data->omset }}" />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Potensi</span>
+            </label>
+            <input type="number" class="input input-bordered input-sm" name="potensi" value="{{ $data->potensi }}" />
+          </div>
           <div class="flex space-x-4">
             <div class="form-control w-1/4">
               <label class="label">
@@ -356,8 +368,12 @@
               Tanggal, Bulan, dan Tahun JT menggunakan format d-m-Y. Contoh 11-07-2000
             </li>
             <li>
-              Nilai LB diisi dengan nilai lebih bayar dalam SPT Restitusi. Dapat dikosongkan jika pemeriksaan bukan
-              merupakan pemeriksaan rutin lebih bayar tahunan badan
+              Nilai LB diisi dengan nilai negatif lebih bayar dalam SPT Restitusi. Dapat dikosongkan jika pemeriksaan
+              bukan
+              merupakan pemeriksaan rutin lebih bayar tahunan badan. Contoh : -100000000
+            </li>
+            <li>
+              Omset dan potensi diisi dengan nilai omset dari WP yang bersangkutan
             </li>
             <li>
               Nomor ND dan Tanggal ND diisi sesuai ND Penunjukan Supervisor

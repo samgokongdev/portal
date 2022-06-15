@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Daftarfpp;
 
 class DaftarfppController extends Controller
 {
@@ -13,7 +14,10 @@ class DaftarfppController extends Controller
      */
     public function index()
     {
-        return view('daftarfpp');
+        $spv_non_fpp = Daftarfpp::where('posisi','!=','0')->count();
+        $jumlah_kelompok = Daftarfpp::distinct()->count('kelompok');
+        $fpp = Daftarfpp::all();
+        return view('daftarfpp', compact('fpp','jumlah_kelompok','spv_non_fpp'));
     }
 
     /**
@@ -23,7 +27,7 @@ class DaftarfppController extends Controller
      */
     public function create()
     {
-        //
+        return view('add_daftarfpp');
     }
 
     /**
@@ -34,7 +38,28 @@ class DaftarfppController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasi =$request->validate([
+            'nip' => 'required|min:18|max:18|unique:daftarfpps',
+            'nama_fpp' => 'required',
+            'posisi' => 'required',
+            'kelompok' => 'required',
+            'kode_fpp' => 'required'
+        ]);
+
+        $simpan_data_pemeriksa = Daftarfpp::create([
+            'nip' => $request->nip,
+            'nama_fpp' => $request->nama_fpp,
+            'posisi' => $request->posisi,
+            'kelompok' => $request->kelompok,
+            'kode_fpp' => $request->kode_fpp
+        ]);
+
+
+        if(!$simpan_data_pemeriksa){
+            return back()->with('inputError','Gagal Update Data, Periksa Kembali Inputan Anda');
+        } else {
+            return redirect('/daftarfpp')->with('success', 'Input/Edit data tunggakan berhasil!!');
+        }
     }
 
     /**

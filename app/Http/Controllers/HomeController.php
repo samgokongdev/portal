@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tunggakan;
+use App\Models\View_tunggakan_all;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -16,8 +17,9 @@ class HomeController extends Controller
     {
         $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
+        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
         // echo $rekap_tunggakan;
-        return view('home',compact('rekap_tunggakan','np2_belum_sp2')); 
+        return view('home',compact('rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat')); 
     }
 
     /**
