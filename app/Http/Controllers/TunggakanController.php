@@ -7,6 +7,7 @@ use App\Models\Progrespemeriksaan;
 use App\Models\Tunggakan;
 use App\Models\View_tunggakan_all;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TunggakanController extends Controller
 {
@@ -61,10 +62,12 @@ class TunggakanController extends Controller
 
         $jt = $request->thn_jt.'-'.$request->bln_jt.'-'.$request->tgl_jt;
         $nd = $request->thn_nd.'-'.$request->bln_nd.'-'.$request->tgl_nd;
+        $tgl_sp2 = $request->thn_sp2.'-'.$request->bln_sp2.'-'.$request->tgl_sp2;
         $delete_pemeriksa_lama=Pemeriksa::where('np2',$request->np2)->delete();
         // echo $jt;
         $simpan_data_pemeriksa = Pemeriksa::create([
             'np2' => $request->np2,
+            'tgl_sp2' => $tgl_sp2,
             'nd_penunjukan' => $request->nd_penunjukan,
             'tgl_nd_penunjukan' => $nd,
             'fpp1' => $request->fpp1,
@@ -170,5 +173,22 @@ class TunggakanController extends Controller
         $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
         $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
         return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
+    }
+
+    public function rekapTunggakanPerFpp()
+    {
+        $rekap = View_tunggakan_all::where('sp2','!=','')
+                                    ->groupBy('fpp1')
+                                    ->select('kelompok','fpp1', DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) = "2" THEN np2 END) as ppn'), DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) != "2" THEN np2 END) as non_ppn'))
+                                    ->orderBy('kelompok','asc')
+                                    ->get();
+        $rekap_per_pic = View_tunggakan_all::where('sp2','!=','')
+                                    ->groupBy('pic')
+                                    ->select('pic', DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) = "2" THEN np2 END) as ppn'), DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) != "2" THEN np2 END) as non_ppn'))
+                                    ->orderBy('pic','desc')
+                                    ->get();
+
+        return view('rekapitulasi', compact('rekap','rekap_per_pic'));
+        // echo $tes;
     }
 }

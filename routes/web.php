@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TunggakanController;
 use App\Http\Controllers\DaftarfppController;
+use App\Http\Controllers\LhpPemeriksaanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,9 @@ Route::resource('home', HomeController::class)->middleware('auth');
 Route::resource('tunggakan', TunggakanController::class)->middleware('auth');
 Route::get('jt',[TunggakanController::class, 'jt'])->name('tunggakan.jt')->middleware('auth');
 Route::get('np2belumterbit',[TunggakanController::class, 'np2belumterbit'])->name('tunggakan.np2belumterbit')->middleware('auth');
+Route::get('rekaptunggakan',[TunggakanController::class, 'rekapTunggakanPerFpp'])->name('tunggakan.rekapTunggakanPerFpp')->middleware('auth');
 
+Route::resource('lhp', LhpPemeriksaanController::class)->middleware('auth');
 
 Route::resource('daftarfpp', DaftarfppController::class)->middleware('auth');
 

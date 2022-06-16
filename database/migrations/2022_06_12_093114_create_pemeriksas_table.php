@@ -18,6 +18,10 @@ class CreatePemeriksasTable extends Migration
             $table->string('np2');
             $table->string('nd_penunjukan')->nullable();
             $table->date('tgl_nd_penunjukan')->nullable();
+            $table->date('tgl_sp2')->nullable();
+            $table->string('sp2p')->nullable();
+            $table->date('tgl_sp2p')->nullable();
+            $table->date('tgl_sp2_konversi')->nullable();
             $table->string('fpp1')->nullable();
             $table->string('fpp2')->nullable();
             $table->string('fpp3')->nullable();
