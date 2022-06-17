@@ -56,18 +56,31 @@ class TunggakanController extends Controller
             'fpp1' => 'required',
             'fpp2' => 'required',
             'fpp3' => 'required',
-            'fpp4' => 'required',
-            'pic' => 'required',
+            // 'fpp4' => 'required',
+            // 'pic' => 'required',
         ]);
 
         $jt = $request->thn_jt.'-'.$request->bln_jt.'-'.$request->tgl_jt;
         $nd = $request->thn_nd.'-'.$request->bln_nd.'-'.$request->tgl_nd;
         $tgl_sp2 = $request->thn_sp2.'-'.$request->bln_sp2.'-'.$request->tgl_sp2;
+        
+        if(!$request->tgl_sp2p || !$request->bln_sp2p || !$request->thn_sp2p){
+            $tgl_sp2_konversi = $tgl_sp2;
+            $tgl_sp2p = null;
+        }else{
+            $tgl_sp2_konversi= $tgl_sp2p;
+            $tgl_sp2p = $request->thn_sp2p.'-'.$request->bln_sp2p.'-'.$request->tgl_sp2p;
+        };
+
+
         $delete_pemeriksa_lama=Pemeriksa::where('np2',$request->np2)->delete();
-        // echo $jt;
+        echo $jt;
         $simpan_data_pemeriksa = Pemeriksa::create([
             'np2' => $request->np2,
+            'sp2p' => $request->sp2p,
             'tgl_sp2' => $tgl_sp2,
+            'tgl_sp2p' => $tgl_sp2p,
+            'tgl_sp2_konversi' => $tgl_sp2_konversi,
             'nd_penunjukan' => $request->nd_penunjukan,
             'tgl_nd_penunjukan' => $nd,
             'fpp1' => $request->fpp1,
@@ -84,7 +97,7 @@ class TunggakanController extends Controller
 
 
         if(!$simpan_data_pemeriksa){
-            return back()->with('inputError','Gagal Update Data, Periksa Kembali Inputan Anda');
+            echo "error";
         } else {
             return redirect('/tunggakan')->with('success', 'Input/Edit data tunggakan berhasil!!');
         }

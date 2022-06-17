@@ -25,7 +25,7 @@
     <div>Detail Pemeriksaan NP2 : </div>
     <div class="flex space-x-5">
       <div class="w-4/6 space-y-2">
-        <form method="post" action="{{ route('tunggakan.store') }}">
+        <form method="post" action="{{ route('lhp.updatedata') }}">
           @csrf
           <div class="form-control">
             <label class="label">
@@ -48,6 +48,22 @@
               </label>
               <input type="text" class="input input-bordered input-sm bg-gray-100" readonly
                 value="{{ $data->nama_wp }}" />
+            </div>
+          </div>
+          <div class="flex space-x-4">
+            <div class="form-control w-1/2">
+              <label class="label">
+                <span class="label-text">Nomor LHP</span>
+              </label>
+              <input type="text" class="input input-bordered input-sm bg-gray-100" readonly
+                value="{{ $data->lhp }}" />
+            </div>
+            <div class="form-control w-1/2">
+              <label class="label">
+                <span class="label-text">TANGGAL LHP</span>
+              </label>
+              <input type="text" class="input input-bordered input-sm bg-gray-100" readonly
+                value="{{ $data->tgl_lhp }}" />
             </div>
           </div>
           <div class="flex space-x-2">
@@ -189,12 +205,10 @@
               </label>
               <select name="tgl_sp2p" class="select select-sm w-full max-w-xs">
                 <option
-                  value="
-                  @if ($data->tgl_sp2p < 1) {{ null }} 
+                  value="@if ($data->tgl_sp2p < 1) {{ null }}
                   @else
-                    {{ date('d', strtotime($data->tgl_sp2p)) }} @endif">
+                                    {{ date('d', strtotime($data->tgl_sp2p)) }} @endif">
                   @if ($data->tgl_sp2p < 1)
-                    {{ null }}
                   @else
                     {{ date('d', strtotime($data->tgl_sp2p)) }}
                   @endif
@@ -238,11 +252,9 @@
               </label>
               <select name="bln_sp2p" class="select select-sm w-full max-w-xs">
                 <option
-                  value="@if ($data->tgl_sp2p < 1) {{ null }} 
-                  @else
+                  value="@if ($data->tgl_sp2p < 1) @else
                                   {{ date('m', strtotime($data->tgl_sp2p)) }} @endif">
                   @if ($data->tgl_sp2p < 1)
-                    {{ null }}
                   @else
                     {{ date('m', strtotime($data->tgl_sp2p)) }}
                   @endif
@@ -267,10 +279,9 @@
               </label>
               <select name="thn_sp2p" class="select select-sm w-full max-w-xs">
                 <option
-                  value="@if ($data->tgl_sp2p < 1) {{ null }} @else
+                  value="@if ($data->tgl_sp2p < 1) @else
                                 {{ date('Y', strtotime($data->tgl_sp2p)) }} @endif">
                   @if ($data->tgl_sp2p < 1)
-                    {{ null }}
                   @else
                     {{ date('Y', strtotime($data->tgl_sp2p)) }}
                   @endif

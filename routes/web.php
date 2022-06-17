@@ -28,8 +28,13 @@ Route::get('np2belumterbit',[TunggakanController::class, 'np2belumterbit'])->nam
 Route::get('rekaptunggakan',[TunggakanController::class, 'rekapTunggakanPerFpp'])->name('tunggakan.rekapTunggakanPerFpp')->middleware('auth');
 
 Route::resource('lhp', LhpPemeriksaanController::class)->middleware('auth');
+Route::post('updatedata',[LhpPemeriksaanController::class, 'updatedata'])->name('lhp.updatedata')->middleware('auth');
 
 Route::resource('daftarfpp', DaftarfppController::class)->middleware('auth');
+Route::get('rekaplhp',[LhpPemeriksaanController::class, 'rekaplhp'])->name('lhp.rekaplhp')->middleware('auth');
+Route::get('rekaplhp/{id}',[LhpPemeriksaanController::class, 'rekaplhptahun'])->name('lhp.rekaplhptahun')->middleware('auth');
+Route::get('detailperspv/{id}',[LhpPemeriksaanController::class, 'detailperspv'])->name('lhp.detailperspv')->middleware('auth');
+Route::get('detailperpic/{id}',[LhpPemeriksaanController::class, 'detailperpic'])->name('lhp.detailperpic')->middleware('auth');
 
 
 Route::resource('login', LoginController::class)->middleware('guest');
