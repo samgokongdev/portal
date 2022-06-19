@@ -4636,14 +4636,14 @@ body[dir="rtl"] .checkbox:checked,
 .h-6{
   height: 1.5rem;
 }
+.h-10{
+  height: 2.5rem;
+}
 .h-4{
   height: 1rem;
 }
 .h-screen{
   height: 100vh;
-}
-.h-10{
-  height: 2.5rem;
 }
 .h-5{
   height: 1.25rem;
@@ -4929,6 +4929,14 @@ body[dir="rtl"] .checkbox:checked,
 .bg-gray-900{
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+.bg-green-900{
+  --tw-bg-opacity: 1;
+  background-color: rgb(20 83 45 / var(--tw-bg-opacity));
+}
+.bg-orange-700{
+  --tw-bg-opacity: 1;
+  background-color: rgb(194 65 12 / var(--tw-bg-opacity));
 }
 .bg-opacity-50{
   --tw-bg-opacity: 0.5;

@@ -6,6 +6,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TunggakanController;
 use App\Http\Controllers\DaftarfppController;
 use App\Http\Controllers\LhpPemeriksaanController;
+use App\Http\Controllers\PenerimaanController;
+use App\Http\Controllers\SkpController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,11 +32,15 @@ Route::get('rekaptunggakan',[TunggakanController::class, 'rekapTunggakanPerFpp']
 Route::resource('lhp', LhpPemeriksaanController::class)->middleware('auth');
 Route::post('updatedata',[LhpPemeriksaanController::class, 'updatedata'])->name('lhp.updatedata')->middleware('auth');
 
+Route::resource('penerimaan', PenerimaanController::class)->middleware('auth');
+
 Route::resource('daftarfpp', DaftarfppController::class)->middleware('auth');
 Route::get('rekaplhp',[LhpPemeriksaanController::class, 'rekaplhp'])->name('lhp.rekaplhp')->middleware('auth');
 Route::get('rekaplhp/{id}',[LhpPemeriksaanController::class, 'rekaplhptahun'])->name('lhp.rekaplhptahun')->middleware('auth');
 Route::get('detailperspv/{id}',[LhpPemeriksaanController::class, 'detailperspv'])->name('lhp.detailperspv')->middleware('auth');
 Route::get('detailperpic/{id}',[LhpPemeriksaanController::class, 'detailperpic'])->name('lhp.detailperpic')->middleware('auth');
+
+Route::resource('skp', SkpController::class)->middleware('auth');
 
 
 Route::resource('login', LoginController::class)->middleware('guest');

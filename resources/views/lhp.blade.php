@@ -38,14 +38,14 @@
         <div class="stat-value">
           <form action="{{ route('lhp.store') }}" method="post">
             @csrf
-            <div class="form-control w-full max-w-xs">
+            <div class="form-control w-full">
               <label class="label">
-                <span class="label-text">Masukkan Tahun paak</span>
+                <span class="label-text">Masukkan Tahun pajak</span>
               </label>
               <input value="{{ $tahun }}" name="tahun" type="text" placeholder="contoh: 2022"
-                class="input input-bordered w-full max-w-xs" />
+                class="input w-full input-bordered" />
             </div>
-            <button class="btn btn-gray-100 btn-sm btn-block mt-2 flex justify-center items-center">
+            <button class="btn btn-gray-100 btn-sm mt-2 flex justify-center items-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -64,7 +64,7 @@
         <h2 class="card-title font-bold">Daftar Hasil Pemeriksaan Tahun {{ $tahun }}</h2>
         <div class="card-body bg-white rounded-lg">
           <div class="">
-            <table class="display nowrap" id="tabel1">
+            <table class="display nowrap" id="tabel1" style="width: 100%">
               <thead>
                 <tr style="font-size : 12px">
                   <th>NP2</th>

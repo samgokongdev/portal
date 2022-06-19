@@ -73,7 +73,7 @@
           <h2 class="card-title font-bold">Daftar Tunggakan Pemeriksaan</h2>
           <div class="card-body bg-white rounded-lg">
             <div class="">
-              <table class="display nowrap" id="tabel1">
+              <table class="display nowrap" id="tabel1" style="width: 100%">
                 <thead>
                   <tr style="font-size : 12px">
                     <th>SISA HARI</th>
