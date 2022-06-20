@@ -12,7 +12,7 @@
     <div class="stats bg-green-900 text-white shadow">
       <div class="stat">
         <div class="stat-title font-bold">JUMLAH SKP STP</div>
-        <div class="stat-value">{{ number_format($sum_skpkb, 0) }} Rupiah</div>
+        <div class="stat-value" style="font-size: 25px">{{ number_format($sum_skpkb, 0) }}</div>
         <div class="stat-desc font-semibold">Jumlah SKPKB/SKPKBT/STP Tahun {{ $tahun }}</div>
       </div>
     </div>
@@ -20,7 +20,7 @@
     <div class="stats bg-red-900 text-white shadow">
       <div class="stat">
         <div class="stat-title">JUMLAH SKPLB</div>
-        <div class="stat-value">{{ number_format($sum_skplb, 0) }} Rupiah</div>
+        <div class="stat-value" style="font-size: 25px">{{ number_format($sum_skplb, 0) }}</div>
         <div class="stat-desc">Jumlah SKPLB Tahun {{ $tahun }} </div>
       </div>
     </div>
@@ -86,9 +86,9 @@
                     <td>{{ $d->pasal_skp }}</td>
                     <td>{{ $d->masa_1 }}-{{ $d->masa_2 }}/{{ $d->tahun_pajak }}</td>
                     <td>{{ $d->mata_uang }}</td>
-                    <td>{{ $d->jumlah_ket }}</td>
-                    <td>{{ $d->kurs }}</td>
-                    <td>{{ $d->jumlah_ket_idr }}</td>
+                    <td>{{ number_format($d->jumlah_ket) }}</td>
+                    <td>{{ number_format($d->kurs) }}</td>
+                    <td>{{ number_format($d->jumlah_ket_idr) }}</td>
                     <td>{{ $d->no_dok }}</td>
                     <td>{{ $d->fpp1 }}</td>
                     <td>{{ $d->pic }}</td>
@@ -138,9 +138,9 @@
                     <td>{{ $d->pasal_skp }}</td>
                     <td>{{ $d->masa_1 }}-{{ $d->masa_2 }}/{{ $d->tahun_pajak }}</td>
                     <td>{{ $d->mata_uang }}</td>
-                    <td>{{ $d->jumlah_ket }}</td>
-                    <td>{{ $d->kurs }}</td>
-                    <td>{{ $d->jumlah_ket_idr }}</td>
+                    <td>{{ number_format($d->jumlah_ket) }}</td>
+                    <td>{{ number_format($d->kurs) }}</td>
+                    <td>{{ number_format($d->jumlah_ket_idr) }}</td>
                     <td>{{ $d->no_dok }}</td>
                     <td>{{ $d->fpp1 }}</td>
                     <td>{{ $d->pic }}</td>

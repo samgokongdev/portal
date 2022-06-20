@@ -16,18 +16,7 @@ class PenerimaanController extends Controller
     public function index()
     {
         $tahun = date('Y');
-        $list_penerimaan_npwp = Penerimaan::selectRaw('npwp,nama_wp,sum(jumlah) as jumlah')
-                                ->where('thn_setor','=',$tahun)
-                                ->groupBy('npwp','nama_wp')
-                                ->orderBy(DB::raw('sum(jumlah)'),'desc')
-                                ->get();
-        $penerimaan_pemeriksaan= Penerimaan::where('thn_setor','=',$tahun)
-                                ->where('keterangan','=','Pemeriksaan')
-                                ->orWhere('keterangan','=','Pengungkapan')
-                                ->get();
-        $penerimaan_penagihan= Penerimaan::where('thn_setor','=',$tahun)
-                                ->where('keterangan','!=','Pemeriksaan')
-                                ->orWhere('keterangan','!=','Pengungkapan')
+        $penerimaan_all= Penerimaan::where('thn_setor','=',$tahun)
                                 ->get();
         $sum_penerimaan = Penerimaan::select('jumlah')
                                 ->where('thn_setor','=',$tahun)
@@ -42,8 +31,9 @@ class PenerimaanController extends Controller
                                 ->where('keterangan','=','Pemeriksaan')
                                 ->orWhere('keterangan','=','Pengungkapan')
                                 ->sum('jumlah');
+
         // echo $list_penerimaan_skp;
-        return view('penerimaan',compact('tahun','list_penerimaan_npwp','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_pemeriksaan','penerimaan_penagihan'));
+        return view('penerimaan',compact('tahun','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_all'));
     }
 
     /**
@@ -64,7 +54,25 @@ class PenerimaanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tahun = $request->tahun;
+        $penerimaan_all= Penerimaan::where('thn_setor','=',$tahun)
+        ->get();
+        $sum_penerimaan = Penerimaan::select('jumlah')
+                ->where('thn_setor','=',$tahun)
+                ->sum('jumlah');
+        $sum_penerimaan_penagihan = Penerimaan::select('jumlah')
+                ->where('thn_setor','=',$tahun)
+                ->where('keterangan','!=','Pemeriksaan')
+                ->where('keterangan','!=','Pengungkapan')
+                ->sum('jumlah');
+        $sum_penerimaan_pemeriksaan = Penerimaan::select('jumlah')
+                ->where('thn_setor','=',$tahun)
+                ->where('keterangan','=','Pemeriksaan')
+                ->orWhere('keterangan','=','Pengungkapan')
+                ->sum('jumlah');
+
+// echo $list_penerimaan_skp;
+        return view('penerimaan',compact('tahun','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_all'));
     }
 
     /**
@@ -110,5 +118,57 @@ class PenerimaanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rekap()
+    {
+        $tahun = date('Y');
+        $penerimaan_npwp = DB::table('penerimaans')
+                        ->leftJoin('mfwps','penerimaans.npwp','=', 'mfwps.npwp')
+                        ->select('penerimaans.npwp','mfwps.nama_wp',DB::raw('sum(penerimaans.jumlah) as jumlah'))
+                        ->where('penerimaans.thn_setor','=',$tahun)
+                        ->groupBy('penerimaans.npwp','mfwps.nama_wp')
+                        ->orderBy(DB::raw('sum(penerimaans.jumlah)'),'desc')
+                        ->get();
+        $penerimaan_skp = Penerimaan::where('thn_setor','=',$tahun)
+                        ->select('no_skp',DB::raw('sum(jumlah) as jumlah'))
+                        ->groupBy('no_skp')
+                        ->orderBy(DB::raw('sum(jumlah)'),'desc')
+                        ->get();
+        // echo $penerimaan_npwp;
+            
+        return view('rekappenerimaan', compact('tahun','penerimaan_npwp','penerimaan_skp'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function rekappenerimaan(Request $request)
+    {
+        // echo "yuhuu";
+        $tahun = $request->tahun;
+        $penerimaan_npwp = DB::table('penerimaans')
+                        ->leftJoin('mfwps','penerimaans.npwp','=', 'mfwps.npwp')
+                        ->select('penerimaans.npwp','mfwps.nama_wp',DB::raw('sum(penerimaans.jumlah) as jumlah'))
+                        ->where('penerimaans.thn_setor','=',$tahun)
+                        ->groupBy('penerimaans.npwp','mfwps.nama_wp')
+                        ->orderBy(DB::raw('sum(penerimaans.jumlah)'),'desc')
+                        ->get();
+        $penerimaan_skp = Penerimaan::where('thn_setor','=',$tahun)
+                        ->select('no_skp',DB::raw('sum(jumlah) as jumlah'))
+                        ->groupBy('no_skp')
+                        ->orderBy(DB::raw('sum(jumlah)'),'desc')
+                        ->get();
+        // echo $penerimaan_npwp;
+            
+        return view('rekappenerimaan', compact('tahun','penerimaan_npwp','penerimaan_skp'));
     }
 }

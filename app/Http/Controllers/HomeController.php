@@ -6,6 +6,7 @@ use App\Models\Tunggakan;
 use App\Models\View_lhp_all;
 use App\Models\View_tunggakan_all;
 use App\Models\Skp;
+use App\Models\Penerimaan;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -33,8 +34,18 @@ class HomeController extends Controller
                         ->where('jns_skp','=','SKPLB')
                         ->where('sumber','!=',"LAPPEN")
                         ->sum('jumlah_ket_idr');
+        $sum_penerimaan_penagihan = Penerimaan::select('jumlah')
+                        ->where('thn_setor','=',$tahun)
+                        ->where('keterangan','!=','Pemeriksaan')
+                        ->where('keterangan','!=','Pengungkapan')
+                        ->sum('jumlah');
+        $sum_penerimaan_pemeriksaan = Penerimaan::select('jumlah')
+                        ->where('thn_setor','=',$tahun)
+                        ->where('keterangan','=','Pemeriksaan')
+                        ->orWhere('keterangan','=','Pengungkapan')
+                        ->sum('jumlah');
         // echo $rekap_tunggakan;
-        return view('home',compact('rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','lhp','konversi','sum_skpkb','sum_skplb')); 
+        return view('home',compact('rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','lhp','konversi','sum_skpkb','sum_skplb','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan')); 
     }
 
     /**

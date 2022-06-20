@@ -9,34 +9,11 @@
   </div>
 
   <div class="grid grid-cols-3 gap-4 mb-5">
-    <div class="stats bg-green-900 text-white shadow">
-      <div class="stat">
-        <div class="stat-title font-bold">Penerimaan Total</div>
-        <div class="stat-value">{{ number_format($sum_penerimaan) }}</div>
-        <div class="stat-desc font-semibold">Penerimaan Dari Kegiatan Pemeriksaan dan Penagihan</div>
-      </div>
-    </div>
-
-    <div class="stats bg-green-900 text-white shadow">
-      <div class="stat">
-        <div class="stat-title font-bold">Penerimaan Pemeriksaan</div>
-        <div class="stat-value">{{ number_format($sum_penerimaan_pemeriksaan) }}</div>
-        <div class="stat-desc font-semibold">Penerimaan Dari Kegiatan Pemeriksaan Tanpa Tindakan Penagihan</div>
-      </div>
-    </div>
-
-    <div class="stats bg-red-900 text-white shadow">
-      <div class="stat">
-        <div class="stat-title">Penerimaan Penagihan</div>
-        <div class="stat-value">{{ number_format($sum_penerimaan_penagihan) }}</div>
-        <div class="stat-desc">Penerimaan dari produk hukum melalui tindakan penagihan</div>
-      </div>
-    </div>
 
     <div class="stats shadow">
       <div class="stat">
         <div class="stat-value">
-          <form action="{{ route('penerimaan.store') }}" method="post">
+          <form action="{{ route('penerimaan.rekappenerimaan') }}" method="post">
             @csrf
             <div class="form-control w-full">
               <label class="label">
@@ -58,39 +35,54 @@
     </div>
   </div>
 
-
   <div class="w-full mt-2 pt-3">
     <div class="card w-full bg-gray-50 text-primary-content">
       <div class="card-body">
-        <h2 class="card-title font-bold">Penerimaan {{ $tahun }} Dari Kegiatan Pemeriksaan dan Penagihan</h2>
+        <h2 class="card-title font-bold">Rekapitulasi PKM Pemeriksaan Per WP Tahun {{ $tahun }}</h2>
         <div class="card-body bg-white rounded-lg">
           <div class="">
             <table class="display nowrap" id="tabel3" style="width: 100%">
               <thead>
                 <tr style="font-size : 12px">
                   <th>NPWP</th>
-                  <th>KODEMAP/KJS</th>
-                  <th>MASA PAJAK</th>
-                  <th>TANGGAL SETOR</th>
-                  <th>SKP</th>
+                  <th>NAMA WAJIB PAJAK</th>
                   <th>JUMLAH</th>
-                  <th>SUMBER</th>
-                  <th>NTPN</th>
-                  <th>KETERANGAN</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($penerimaan_all as $l)
+                @foreach ($penerimaan_npwp as $d)
                   <tr>
-                    <td>{{ $l->npwp }}</td>
-                    <td>{{ $l->kode_map }}/{{ $l->kjs }}</td>
-                    <td>{{ $l->masa_pajak }}</td>
-                    <td>{{ $l->tanggal_gabung }}</td>
-                    <td>{{ $l->no_skp }}</td>
-                    <td>{{ number_format($l->jumlah) }}</td>
-                    <td>{{ $l->sumber }}</td>
-                    <td>{{ $l->ntpn }}</td>
-                    <td>{{ $l->keterangan }}</td>
+                    <td>{{ $d->npwp }}</td>
+                    <td>{{ $d->nama_wp }}</td>
+                    <td>{{ number_format($d->jumlah) }}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full mt-2 pt-3">
+    <div class="card w-full bg-gray-50 text-primary-content">
+      <div class="card-body">
+        <h2 class="card-title font-bold">Rekapitulasi PKM Pemeriksaan Per SKP Tahun {{ $tahun }}</h2>
+        <div class="card-body bg-white rounded-lg">
+          <div class="">
+            <table class="display nowrap" id="tabel2" style="width: 100%">
+              <thead>
+                <tr style="font-size : 12px">
+                  <th>SKP</th>
+                  <th>JUMLAH</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($penerimaan_skp as $d)
+                  <tr>
+                    <td>{{ $d->no_skp }}</td>
+                    <td>{{ number_format($d->jumlah) }}</td>
                   </tr>
                 @endforeach
               </tbody>

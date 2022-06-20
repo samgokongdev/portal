@@ -33,6 +33,8 @@ Route::resource('lhp', LhpPemeriksaanController::class)->middleware('auth');
 Route::post('updatedata',[LhpPemeriksaanController::class, 'updatedata'])->name('lhp.updatedata')->middleware('auth');
 
 Route::resource('penerimaan', PenerimaanController::class)->middleware('auth');
+Route::get('rekap',[PenerimaanController::class, 'rekap'])->name('penerimaan.rekap')->middleware('auth');
+Route::post('rekappenerimaan',[PenerimaanController::class, 'rekappenerimaan'])->name('penerimaan.rekappenerimaan')->middleware('auth');
 
 Route::resource('daftarfpp', DaftarfppController::class)->middleware('auth');
 Route::get('rekaplhp',[LhpPemeriksaanController::class, 'rekaplhp'])->name('lhp.rekaplhp')->middleware('auth');

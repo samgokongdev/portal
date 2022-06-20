@@ -7,7 +7,7 @@
     </ul>
   </div>
 
-  <div class="grid grid-cols-4 gap-4">
+  <div class="grid grid-cols-3 gap-4">
     <div class="stats bg-primary text-primary-content">
       <div class="stat">
         <div class="stat-title font-medium">Tunggakan Pemeriksaan</div>
@@ -67,7 +67,7 @@
           <div class="stat-title font-medium">SKPKB & STP</div>
           <div class="stat-value">Rp {{ number_format($sum_skpkb) }}</div>
           <div class="stat-actions">
-            <button class="btn btn-sm btn-success"><a href="{{ route('lhp.index') }}">Lihat
+            <button class="btn btn-sm btn-success"><a href="{{ route('skp.index') }}">Lihat
                 Detail</a></button>
           </div>
         </div>
@@ -78,7 +78,7 @@
           <div class="stat-title font-medium">SKPLB</div>
           <div class="stat-value">Rp {{ number_format($sum_skplb * -1) }}</div>
           <div class="stat-actions">
-            <button class="btn btn-sm btn-success"><a href="{{ route('lhp.index') }}">Lihat
+            <button class="btn btn-sm btn-success"><a href="{{ route('skp.index') }}">Lihat
                 Detail</a></button>
           </div>
         </div>
@@ -87,9 +87,9 @@
       <div class="stats bg-green-900 text-ora text-white">
         <div class="stat">
           <div class="stat-title font-medium">Penerimaan Pemeriksaan</div>
-          <div class="stat-value">654.000.000.000</div>
+          <div class="stat-value">{{ number_format($sum_penerimaan_pemeriksaan) }}</div>
           <div class="stat-actions">
-            <button class="btn btn-sm btn-success"><a href="{{ route('lhp.index') }}">Lihat
+            <button class="btn btn-sm btn-success"><a href="{{ route('penerimaan.index') }}">Lihat
                 Detail</a></button>
           </div>
         </div>
@@ -98,9 +98,9 @@
       <div class="stats bg-green-900 text-ora text-white">
         <div class="stat">
           <div class="stat-title font-medium">Penerimaan Penagihan</div>
-          <div class="stat-value">654.000.000.000</div>
+          <div class="stat-value">{{ number_format($sum_penerimaan_penagihan) }}</div>
           <div class="stat-actions">
-            <button class="btn btn-sm btn-success"><a href="{{ route('lhp.index') }}">Lihat
+            <button class="btn btn-sm btn-success"><a href="{{ route('penerimaan.index') }}">Lihat
                 Detail</a></button>
           </div>
         </div>
