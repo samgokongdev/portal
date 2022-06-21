@@ -317,4 +317,15 @@ class LhpPemeriksaanController extends Controller
                                     ->get();
         return view('rekaplhp', compact('tahun','rekap_per_spv','rekap_per_pic'));
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function arsiplhp($id)
+    {
+        return view('arsip');
+    }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\DaftarfppController;
 use App\Http\Controllers\LhpPemeriksaanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\SkpController;
+use App\Http\Controllers\PersuratanPemeriksaanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('home', HomeController::class)->middleware('auth');
 
+Route::resource('persuratan', PersuratanPemeriksaanController::class)->middleware('auth');
+Route::get('buat/{id}',[PersuratanPemeriksaanController::class, 'buat'])->name('persuratan.buat')->middleware('auth');
+Route::post('carisurat',[PersuratanPemeriksaanController::class, 'cari'])->name('persuratan.cari')->middleware('auth');
 
 Route::resource('tunggakan', TunggakanController::class)->middleware('auth');
 Route::get('jt',[TunggakanController::class, 'jt'])->name('tunggakan.jt')->middleware('auth');
@@ -41,6 +45,7 @@ Route::get('rekaplhp',[LhpPemeriksaanController::class, 'rekaplhp'])->name('lhp.
 Route::get('rekaplhp/{id}',[LhpPemeriksaanController::class, 'rekaplhptahun'])->name('lhp.rekaplhptahun')->middleware('auth');
 Route::get('detailperspv/{id}',[LhpPemeriksaanController::class, 'detailperspv'])->name('lhp.detailperspv')->middleware('auth');
 Route::get('detailperpic/{id}',[LhpPemeriksaanController::class, 'detailperpic'])->name('lhp.detailperpic')->middleware('auth');
+Route::get('arsiplhp/{id}',[LhpPemeriksaanController::class, 'arsiplhp'])->name('lhp.arsiplhp')->middleware('auth');
 
 Route::resource('skp', SkpController::class)->middleware('auth');
 

@@ -53,7 +53,7 @@
 
       <div class="stats bg-green-900 text-ora text-white">
         <div class="stat">
-          <div class="stat-title font-medium">Angka Konversi Tahun Berjalan</div>
+          <div class="stat-title font-medium">Konversi</div>
           <div class="stat-value">{{ $konversi }}</div>
           <div class="stat-actions">
             <button class="btn btn-sm btn-success"><a href="{{ route('lhp.index') }}">Lihat
@@ -65,7 +65,7 @@
       <div class="stats bg-green-900 text-ora text-white">
         <div class="stat">
           <div class="stat-title font-medium">SKPKB & STP</div>
-          <div class="stat-value">Rp {{ number_format($sum_skpkb) }}</div>
+          <div class="stat-value" style="font-size: 24px">Rp {{ number_format($sum_skpkb) }}</div>
           <div class="stat-actions">
             <button class="btn btn-sm btn-success"><a href="{{ route('skp.index') }}">Lihat
                 Detail</a></button>
@@ -76,7 +76,7 @@
       <div class="stats bg-red-900 text-ora text-white">
         <div class="stat">
           <div class="stat-title font-medium">SKPLB</div>
-          <div class="stat-value">Rp {{ number_format($sum_skplb * -1) }}</div>
+          <div class="stat-value" style="font-size: 24px">Rp {{ number_format($sum_skplb * -1) }}</div>
           <div class="stat-actions">
             <button class="btn btn-sm btn-success"><a href="{{ route('skp.index') }}">Lihat
                 Detail</a></button>
@@ -87,7 +87,7 @@
       <div class="stats bg-green-900 text-ora text-white">
         <div class="stat">
           <div class="stat-title font-medium">Penerimaan Pemeriksaan</div>
-          <div class="stat-value">{{ number_format($sum_penerimaan_pemeriksaan) }}</div>
+          <div class="stat-value" style="font-size: 24px">{{ number_format($sum_penerimaan_pemeriksaan) }}</div>
           <div class="stat-actions">
             <button class="btn btn-sm btn-success"><a href="{{ route('penerimaan.index') }}">Lihat
                 Detail</a></button>
@@ -98,7 +98,7 @@
       <div class="stats bg-green-900 text-ora text-white">
         <div class="stat">
           <div class="stat-title font-medium">Penerimaan Penagihan</div>
-          <div class="stat-value">{{ number_format($sum_penerimaan_penagihan) }}</div>
+          <div class="stat-value" style="font-size: 24px">{{ number_format($sum_penerimaan_penagihan) }}</div>
           <div class="stat-actions">
             <button class="btn btn-sm btn-success"><a href="{{ route('penerimaan.index') }}">Lihat
                 Detail</a></button>
