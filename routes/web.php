@@ -5,10 +5,13 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TunggakanController;
 use App\Http\Controllers\DaftarfppController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\LhpPemeriksaanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\SkpController;
 use App\Http\Controllers\PersuratanPemeriksaanController;
+use App\Http\Controllers\PortaluserController;
+use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +26,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('home', HomeController::class)->middleware('auth');
+
+Route::resource('profil', ProfilController::class)->middleware('auth');
+
+Route::resource('file', FileController::class)->middleware('auth');
+
+Route::resource('portaluser', PortaluserController::class)->middleware('auth');
 
 Route::resource('persuratan', PersuratanPemeriksaanController::class)->middleware('auth');
 Route::get('buat/{id}',[PersuratanPemeriksaanController::class, 'buat'])->name('persuratan.buat')->middleware('auth');
@@ -46,8 +55,14 @@ Route::get('rekaplhp/{id}',[LhpPemeriksaanController::class, 'rekaplhptahun'])->
 Route::get('detailperspv/{id}',[LhpPemeriksaanController::class, 'detailperspv'])->name('lhp.detailperspv')->middleware('auth');
 Route::get('detailperpic/{id}',[LhpPemeriksaanController::class, 'detailperpic'])->name('lhp.detailperpic')->middleware('auth');
 Route::get('arsiplhp/{id}',[LhpPemeriksaanController::class, 'arsiplhp'])->name('lhp.arsiplhp')->middleware('auth');
+Route::get('permohonan',[LhpPemeriksaanController::class, 'permohonan'])->name('lhp.permohonan')->middleware('auth');
+Route::get('buatpermohonan/{id}',[LhpPemeriksaanController::class, 'buatpermohonan'])->name('lhp.buatpermohonan')->middleware('auth');
+Route::post('ajukan',[LhpPemeriksaanController::class, 'ajukan'])->name('lhp.ajukan')->middleware('auth');
+Route::post('approve',[LhpPemeriksaanController::class, 'approve'])->name('lhp.approve')->middleware('auth');
 
 Route::resource('skp', SkpController::class)->middleware('auth');
+Route::get('rekapskp',[SkpController::class, 'rekap'])->name('skp.rekap')->middleware('auth');
+Route::post('rekapskp2',[SkpController::class, 'rekap2'])->name('skp.rekap2')->middleware('auth');
 
 
 Route::resource('login', LoginController::class)->middleware('guest');

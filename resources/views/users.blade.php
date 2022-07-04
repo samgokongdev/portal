@@ -3,27 +3,9 @@
 @section('konten')
   <div class="text-sm breadcrumbs">
     <ul>
-      <li><a>Monitoring Tunggakan</a></li>
-      <li>Daftar Tunggakan</li>
+      <li><a>Pengaturan User</a></li>
+      <li>Daftar User</li>
     </ul>
-  </div>
-
-  <div class="grid grid-cols-3 gap-4 mb-5">
-    <div class="stats shadow">
-      <div class="stat">
-        <div class="stat-title font-bold">Jumlah Kelompok</div>
-        <div class="stat-value">{{ $jumlah_kelompok }} Kelompok</div>
-        <div class="stat-desc">Jumlah total kelompok pemeriksa</div>
-      </div>
-    </div>
-
-    <div class="stats shadow">
-      <div class="stat">
-        <div class="stat-title font-bold">FPP Non SPV</div>
-        <div class="stat-value">{{ $spv_non_fpp }} Orang</div>
-        <div class="stat-desc">Jumlah FPP Non Supervisor</div>
-      </div>
-    </div>
   </div>
 
   @if (session()->has('success'))
@@ -42,38 +24,57 @@
   <div class="w-full mt-2 pt-3">
     <div class="card w-full bg-gray-100 text-primary-content">
       <div class="card-body">
-        <h2 class="card-title font-bold">Daftar Fungsional Pemeriksa Pajak</h2>
-        <a class="btn btn-block" href="{{ route('daftarfpp.create') }}">Tambah</a>
+        <h2 class="card-title font-bold">DAFTAR USER PORTALP3 PMA 4</h2>
         <div class="card-body bg-white rounded-lg">
           <div class="overflow-x-auto">
             <table class="table table-zebra w-full" id="tabel1" style="width: 100%">
               <!-- head -->
               <thead>
                 <tr>
-                  <th>KELOMPOK</th>
-                  <th>KODE FPP</th>
+                  <th>NIP</th>
                   <th>NAMA</th>
-                  <th>POSISI</th>
+                  <th>SEKSI</th>
+                  <th>ROLES</th>
+                  <th>STATUS</th>
                   <th>AKSI</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($fpp as $f)
+                @foreach ($users as $i)
                   <tr>
-                    <th>{{ $f->kelompok }}</th>
-                    <td>{{ $f->kode_fpp }}</td>
-                    <td>{{ $f->nama_fpp }}</td>
+                    <td>{{ $i->username }}</td>
+                    <td>{{ $i->name }}</td>
                     <td>
-                      @if ($f->posisi == 0)
-                        SUPERVISOR
-                      @elseif($f->posisi == 1)
-                        KETUA TIM
+                      @if ($i->seksi == 1)
+                        PPP
+                      @elseif ($i->seksi == 2)
+                        FPP
                       @else
-                        ANGGOTA
+                        LAINNYA
                       @endif
                     </td>
                     <td>
-                      <a href="{{ route('daftarfpp.show', $f->id) }}" class="btn btn-sm">EDIT</a>
+                      @if ($i->roles < 5)
+                        USER
+                      @elseif ($i->roles == 7)
+                        KEPALA SEKSI P3
+                      @elseif ($i->roles == 6)
+                        PELAKSANA P3
+                      @elseif ($i->roles == 8)
+                        KEPALA KANTOR
+                      @elseif ($i->roles == 9)
+                        SUPERADMIN
+                      @endif
+                    </td>
+                    <td>
+                      @if ($i->status == 1)
+                        <div class="badge badge-primary">AKTIF</div>
+                      @else
+                        <div class="badge badge-accent">TIDAK AKTIF</div>
+                      @endif
+                    </td>
+                    <td>
+                      <a href="{{ route('portaluser.show', $i->id) }}" class="btn btn-sm">GANTI ROLE</a>
                     </td>
                   </tr>
                 @endforeach

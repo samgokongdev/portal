@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\DaftarLhp;
+use App\Models\Digifile;
 use App\Models\Pemeriksa;
+use App\Models\Permohonan;
+use App\Models\Skp;
 use App\Models\View_lhp_all;
 
 class LhpPemeriksaanController extends Controller
@@ -18,11 +22,11 @@ class LhpPemeriksaanController extends Controller
     public function index()
     {
         $tahun = date("Y");
-        $kode_kpp = "056";
+        $kode_kpp = "057";
         $jumlah_lhp = DaftarLhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
         $list_lhp = DB::table('daftar_lhps')
             ->leftJoin('pemeriksas', 'daftar_lhps.np2', '=', 'pemeriksas.np2')
-            ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic',
+            ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic', 'pemeriksas.nd_ply', 'pemeriksas.tgl_nd_ply',
             DB::raw('
             CASE
                 WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
@@ -66,11 +70,11 @@ class LhpPemeriksaanController extends Controller
         ]);
 
         $tahun = $request->tahun;
-        $kode_kpp = "056";
+        $kode_kpp = "057";
         $jumlah_lhp = DaftarLhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
         $list_lhp = DB::table('daftar_lhps')
             ->leftJoin('pemeriksas', 'daftar_lhps.np2', '=', 'pemeriksas.np2')
-            ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic',
+            ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic', 'pemeriksas.nd_ply', 'pemeriksas.tgl_nd_ply',
             DB::raw('
             CASE
                 WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
@@ -152,7 +156,23 @@ class LhpPemeriksaanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validasi = $request->validate([
+            'nd_ply' => 'required',
+            'tgl_nd_ply' => 'required',
+        ]);
+
+        $cari = Pemeriksa::where('np2','=',$id)->first();
+
+        $cari->update([
+            'nd_ply' => $request->nd_ply,
+            'tgl_nd_ply' => $request->tgl_nd_ply,
+        ]);
+
+        if(!$cari){
+            return back()->with('inputError','Gagal, Silahkan Ulangi');
+        } else {
+            return back()->with('success', 'Update Nomor Naskah Dinas Berhasil');
+        }
     }
 
     /**
@@ -235,7 +255,7 @@ class LhpPemeriksaanController extends Controller
     public function rekaplhp()
     {
         $tahun = date("Y");
-        $kode_kpp = "056";
+        $kode_kpp = "057";
         $rekap_per_spv = View_lhp_all::selectRaw('fpp1,kelompok, sum(konversi) as konversi, count(lhp) as jumlah_lhp')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
@@ -261,7 +281,7 @@ class LhpPemeriksaanController extends Controller
     {
         $tahun = date("Y");
         $keyword = $id;
-        $kode_kpp = '056';
+        $kode_kpp = '057';
         $data_per_pic = View_lhp_all::selectRaw('pic,kelompok,lhp,tgl_lhp,kode_rik,konversi')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
@@ -282,7 +302,7 @@ class LhpPemeriksaanController extends Controller
     {
         $tahun = date("Y");
         $keyword = $id;
-        $kode_kpp = '056';
+        $kode_kpp = '057';
         $data_per_pic = View_lhp_all::selectRaw('pic,kelompok,lhp,tgl_lhp,kode_rik,konversi')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
@@ -302,7 +322,7 @@ class LhpPemeriksaanController extends Controller
     public function rekaplhptahun($id)
     {
         $tahun = $id;
-        $kode_kpp = "056";
+        $kode_kpp = "057";
         $rekap_per_spv = View_lhp_all::selectRaw('fpp1,kelompok, sum(konversi) as konversi, count(lhp) as jumlah_lhp')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
@@ -326,6 +346,193 @@ class LhpPemeriksaanController extends Controller
      */
     public function arsiplhp($id)
     {
-        return view('arsip');
+        $roles = Auth::user()->roles;
+        $pemohon = Auth::user()->username;
+        $cek = Permohonan::where('np2','=',$id)->where('is_approve','=',1)->where('pemohon','=',$pemohon)->count();
+        if($roles > 4)
+        {
+            $data_inti = View_lhp_all::where('np2','=',$id)->first();
+            $data_skpkb = Skp::where('np2','=',$id)
+            ->where('jns_skp','!=','SKPLB')
+            ->where('jns_skp','!=','SKPN')
+            ->where('sumber','!=',"LAPPEN")
+            ->orderBy('tgl_produk_hukum','desc')
+            ->get();
+            $data_skplb = Skp::where('np2', '=',$id)
+            ->where('jns_skp','=','SKPLB')
+            // ->where('jns_skp','!=','SKPN')
+            ->where('sumber','!=',"LAPPEN")
+            ->orderBy('tgl_produk_hukum','desc')
+            ->get();
+            $pembayaran = DB::table('penerimaans')
+            ->leftJoin('skps','penerimaans.no_skp', '=', 'skps.nomor_ket')
+            ->select('skps.jns_skp', 'skps.pasal_skp', 'skps.nomor_ket', 'skps.tgl_produk_hukum', 'skps.jumlah_ket_idr', 'penerimaans.jumlah', 'penerimaans.ntpn', 'penerimaans.tanggal_gabung')
+            ->where('skps.np2','=',$id)
+            ->get();
+            $digifile = Digifile::where('np2','=',$id)->orderBy('id','desc')->get();
+
+        $jumlah_skpkb = Skp::where('np2','=',$id)
+        ->where('jns_skp','!=','SKPLB')
+                    ->where('jns_skp','!=','SKPN')
+                    ->where('sumber','!=',"LAPPEN")
+                    ->sum('jumlah_ket_idr');
+        $jumlah_skplb = Skp::where('np2','=',$id)
+                    ->where('jns_skp','=','SKPLB')
+                    ->where('sumber','!=',"LAPPEN")
+                    ->sum('jumlah_ket_idr');
+        $jumlah_pembayaran = DB::table('penerimaans')
+        ->leftJoin('skps','penerimaans.no_skp', '=', 'skps.nomor_ket')
+        ->select('skps.jns_skp', 'skps.pasal_skp', 'skps.nomor_ket', 'skps.tgl_produk_hukum', 'skps.jumlah_ket_idr', 'penerimaans.jumlah', 'penerimaans.ntpn', 'penerimaans.tanggal_gabung')
+        ->where('skps.np2','=',$id)
+        ->sum('penerimaans.jumlah');
+        
+        // echo $pembayaran;
+        return view('arsip', compact('data_inti','data_skpkb','data_skplb','pembayaran','digifile','jumlah_skpkb','jumlah_skplb','jumlah_pembayaran'));
+        } 
+        else if($roles < 4 && $cek > 0) 
+        {
+            $data_inti = View_lhp_all::where('np2','=',$id)->first();
+            $data_skpkb = Skp::where('np2','=',$id)
+            ->where('jns_skp','!=','SKPLB')
+            ->where('jns_skp','!=','SKPN')
+            ->where('sumber','!=',"LAPPEN")
+            ->orderBy('tgl_produk_hukum','desc')
+            ->get();
+            $data_skplb = Skp::where('np2', '=',$id)
+            ->where('jns_skp','=','SKPLB')
+            // ->where('jns_skp','!=','SKPN')
+            ->where('sumber','!=',"LAPPEN")
+            ->orderBy('tgl_produk_hukum','desc')
+            ->get();
+            $pembayaran = DB::table('penerimaans')
+            ->leftJoin('skps','penerimaans.no_skp', '=', 'skps.nomor_ket')
+            ->select('skps.jns_skp', 'skps.pasal_skp', 'skps.nomor_ket', 'skps.tgl_produk_hukum', 'skps.jumlah_ket_idr', 'penerimaans.jumlah', 'penerimaans.ntpn', 'penerimaans.tanggal_gabung')
+            ->where('skps.np2','=',$id)
+            ->get();
+            $digifile = Digifile::where('np2','=',$id)->orderBy('id','desc')->get();
+
+        $jumlah_skpkb = Skp::where('np2','=',$id)
+        ->where('jns_skp','!=','SKPLB')
+                    ->where('jns_skp','!=','SKPN')
+                    ->where('sumber','!=',"LAPPEN")
+                    ->sum('jumlah_ket_idr');
+        $jumlah_skplb = Skp::where('np2','=',$id)
+                    ->where('jns_skp','=','SKPLB')
+                    ->where('sumber','!=',"LAPPEN")
+                    ->sum('jumlah_ket_idr');
+        $jumlah_pembayaran = DB::table('penerimaans')
+        ->leftJoin('skps','penerimaans.no_skp', '=', 'skps.nomor_ket')
+        ->select('skps.jns_skp', 'skps.pasal_skp', 'skps.nomor_ket', 'skps.tgl_produk_hukum', 'skps.jumlah_ket_idr', 'penerimaans.jumlah', 'penerimaans.ntpn', 'penerimaans.tanggal_gabung')
+        ->where('skps.np2','=',$id)
+        ->sum('penerimaans.jumlah');
+        
+        // echo $pembayaran;
+        return view('arsip', compact('data_inti','data_skpkb','data_skplb','pembayaran','digifile','jumlah_skpkb','jumlah_skplb','jumlah_pembayaran'));
+        } else if ($roles < 4 && $cek == 0)
+        {
+            return view('na',compact('id'));
+        } else {
+            return view('na',compact('id'));
+        }
     }
+    
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function permohonan()
+    {
+        $username = Auth::user()->username;
+        $roles = Auth::user()->roles;
+        if($roles == 7){
+            $data_permohonan = DB::table('permohonans')
+            ->leftJoin('View_lhp_alls','permohonans.np2', '=', 'View_lhp_alls.np2')
+            ->select('permohonans.id','permohonans.np2', 'View_lhp_alls.npwp', 'View_lhp_alls.nama_wp', 'View_lhp_alls.kode_rik', 'View_lhp_alls.periode_1', 'View_lhp_alls.periode_2', 'View_lhp_alls.lhp', 'View_lhp_alls.tgl_lhp','permohonans.is_approve','permohonans.pemohon')
+            ->where('permohonans.is_inactive','=','0')
+            ->orderBy('permohonans.id','desc')
+            ->get();
+        }else{
+            $data_permohonan = DB::table('permohonans')
+            ->leftJoin('View_lhp_alls','permohonans.np2', '=', 'View_lhp_alls.np2')
+            ->select('permohonans.id','permohonans.np2', 'View_lhp_alls.npwp', 'View_lhp_alls.nama_wp', 'View_lhp_alls.kode_rik', 'View_lhp_alls.periode_1', 'View_lhp_alls.periode_2', 'View_lhp_alls.lhp', 'View_lhp_alls.tgl_lhp','permohonans.is_approve','permohonans.pemohon')
+            ->where('permohonans.pemohon','=',$username)
+            ->where('permohonans.is_inactive','=','0')
+            ->orderBy('permohonans.id','desc')
+            ->get();
+        }
+        
+        // echo $data_permohonan;
+        return view('permohonan',compact('data_permohonan'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function buatpermohonan($id)
+    {
+        $np2 = $id;
+        $roles = Auth::user()->roles;
+        
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ajukan(Request $request)
+    {
+        $username = Auth::user()->username;
+        $validasi =$request->validate([
+            'np2' => 'required',
+            'pemohon' => 'required',
+        ]);
+
+        $buat =  Permohonan::create([
+            'np2' => $request->np2,
+            'pemohon' => $request->pemohon  ,
+            'is_approve' => 0,
+            'is_inactive' => 0,
+        ]);
+
+        if(!$buat){
+            return back()->with('inputError','Pangambilan Nomor Naskah Dinas Gagal, Silahkan Perhatikan inputan anda');
+        } else {
+            return redirect()->route('lhp.permohonan')->with('success', 'Permohonan Diajukan');
+        }
+        
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function approve(Request $request)
+    {
+        $validasi =$request->validate([
+            'id' => 'required',
+            'is_approve' => 'required',
+        ]);
+
+        $permohonan = Permohonan::findOrFail($request->id);
+
+        $permohonan->update([
+            'is_approve' => $request->is_approve
+        ]);
+
+        if($permohonan->is_approve == 0){
+            return redirect()->route('lhp.permohonan')->with('success', 'Permohonan Dibatalkan/Ditolak');
+        } else {
+            return redirect()->route('lhp.permohonan')->with('success', 'Permohonan Disetujui');
+        }
+    }
+
 }

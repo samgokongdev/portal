@@ -70,7 +70,8 @@ class DaftarfppController extends Controller
      */
     public function show($id)
     {
-        //
+        $fpp = Daftarfpp::findOrFail($id);
+        return view('editfpp', compact('id','fpp'));
     }
 
     /**
@@ -93,7 +94,29 @@ class DaftarfppController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validasi =$request->validate([
+            'nip' => 'required|min:18|max:18|unique:daftarfpps',
+            'nama_fpp' => 'required',
+            'posisi' => 'required',
+            'kelompok' => 'required',
+            'kode_fpp' => 'required'
+        ]);
+
+        $update = Daftarfpp::findOrFail($id);
+
+        // $update = Daftarfpp::create([
+        //     'nip' => $request->nip,
+        //     'nama_fpp' => $request->nama_fpp,
+        //     'posisi' => $request->posisi,
+        //     'kelompok' => $request->kelompok,
+        //     'kode_fpp' => $request->kode_fpp
+        // ]);
+
+        // if(!$update){
+        //     return redirect()->route('portaluser.index')->with('success', 'Terjadi Kesalahan');
+        // } else {
+        //     return redirect()->route('portaluser.index')->with('success', 'Updated');
+        // }
     }
 
     /**

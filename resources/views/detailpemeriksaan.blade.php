@@ -83,13 +83,13 @@
           <div class="flex space-x-4">
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Tanggal SP2</span>
+                <span class="label-text">Tanggal SP2 <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
               <select name="tgl_sp2" class="select select-sm w-full max-w-xs">
                 <option
-                  value="@if (!$data->tgl_sp2) @else
+                  value="@if ($data->tgl_sp2 < 1) @else
                                     {{ date('d', strtotime($data->tgl_sp2)) }} @endif">
-                  @if (!$data->tgl_sp2)
+                  @if ($data->tgl_sp2 < 1)
                   @else
                     {{ date('d', strtotime($data->tgl_sp2)) }}
                   @endif
@@ -129,13 +129,13 @@
             </div>
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Bulan SP2</span>
+                <span class="label-text">Bulan SP2 <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
               <select name="bln_sp2" class="select select-sm w-full max-w-xs">
                 <option
-                  value="@if (!$data->tgl_sp2) @else
+                  value="@if ($data->tgl_sp2 < 1) @else
                                   {{ date('m', strtotime($data->tgl_sp2)) }} @endif">
-                  @if (!$data->tgl_sp2)
+                  @if ($data->tgl_sp2 < 1)
                   @else
                     {{ date('m', strtotime($data->tgl_sp2)) }}
                   @endif
@@ -156,13 +156,13 @@
             </div>
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Tahun SP2</span>
+                <span class="label-text">Tahun SP2 <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
               <select name="thn_sp2" class="select select-sm w-full max-w-xs">
                 <option
-                  value="@if (!$data->tgl_sp2) @else
+                  value="@if ($data->tgl_sp2 < 1) @else
                                 {{ date('Y', strtotime($data->tgl_sp2)) }} @endif">
-                  @if (!$data->tgl_sp2)
+                  @if ($data->tgl_sp2 < 1)
                   @else
                     {{ date('Y', strtotime($data->tgl_sp2)) }}
                   @endif
@@ -308,13 +308,13 @@
           <div class="flex space-x-4">
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Tanggal JT</span>
+                <span class="label-text">Tanggal JT <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
-              <select name="tgl_jt" class="select select-sm w-full max-w-xs">
+              <select name="tgl_jt" class="select select-sm w-full max-w-xs" required>
                 <option
-                  value="@if (!$data->jt) @else
-                                      {{ date('d', strtotime($data->jt)) }} @endif">
-                  @if (!$data->jt)
+                  value="@if ($data->jt < 1) {{ null }} @else
+                    {{ date('d', strtotime($data->jt)) }} @endif">
+                  @if ($data->jt < 1)
                   @else
                     {{ date('d', strtotime($data->jt)) }}
                   @endif
@@ -357,13 +357,13 @@
             </div>
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Bulan JT</span>
+                <span class="label-text">Bulan JT <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
-              <select name="bln_jt" class="select select-sm w-full max-w-xs">
+              <select name="bln_jt" class="select select-sm w-full max-w-xs" required>
                 <option
-                  value="@if (!$data->jt) @else
+                  value="@if ($data->jt < 1) @else
                                     {{ date('m', strtotime($data->jt)) }} @endif">
-                  @if (!$data->jt)
+                  @if ($data->jt < 1)
                   @else
                     {{ date('m', strtotime($data->jt)) }}
                   @endif
@@ -384,17 +384,23 @@
             </div>
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Tahun JT</span>
+                <span class="label-text">Tahun JT <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
-              <select name="thn_jt" class="select select-sm w-full max-w-xs">
+              <select name="thn_jt" class="select select-sm w-full max-w-xs" required>
                 <option
-                  value="@if (!$data->jt) @else
+                  value="@if ($data->jt < 1) @else
                                   {{ date('Y', strtotime($data->jt)) }} @endif">
-                  @if (!$data->jt)
+                  @if ($data->jt < 1)
                   @else
                     {{ date('Y', strtotime($data->jt)) }}
                   @endif
                 </option>
+                <option value="{{ now()->year + 6 }}">{{ now()->year + 6 }}</option>
+                <option value="{{ now()->year + 5 }}">{{ now()->year + 5 }}</option>
+                <option value="{{ now()->year + 4 }}">{{ now()->year + 4 }}</option>
+                <option value="{{ now()->year + 3 }}">{{ now()->year + 3 }}</option>
+                <option value="{{ now()->year + 2 }}">{{ now()->year + 2 }}</option>
+                <option value="{{ now()->year + 1 }}">{{ now()->year + 1 }}</option>
                 <option value="{{ now()->year }}">{{ now()->year }}</option>
                 <option value="{{ now()->year - 1 }}">{{ now()->year - 1 }}</option>
                 <option value="{{ now()->year - 2 }}">{{ now()->year - 2 }}</option>
@@ -407,7 +413,8 @@
 
           <div class="form-control">
             <label class="label">
-              <span class="label-text">Nomor ND Penunjukan</span>
+              <span class="label-text">Nomor ND Penunjukan <span class="text-red-900 font-bold">(Required)</span>
+              </span>
             </label>
             <input name="nd_penunjukan" required type="text" class="input input-bordered input-sm"
               value="{{ $data->nd_penunjukan }}" />
@@ -415,13 +422,13 @@
           <div class="flex space-x-4">
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Tanggal ND</span>
+                <span class="label-text">Tanggal ND <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
-              <select name="tgl_nd" class="select select-sm w-full max-w-xs">
+              <select name="tgl_nd" class="select select-sm w-full max-w-xs" required>
                 <option
-                  value="@if (!$data->tgl_nd_penunjukan) @else
+                  value="@if ($data->tgl_nd_penunjukan < 1) @else
                                     {{ date('d', strtotime($data->tgl_nd_penunjukan)) }} @endif">
-                  @if (!$data->tgl_nd_penunjukan)
+                  @if ($data->tgl_nd_penunjukan < 1)
                   @else
                     {{ date('d', strtotime($data->tgl_nd_penunjukan)) }}
                   @endif
@@ -461,13 +468,13 @@
             </div>
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Bulan ND</span>
+                <span class="label-text">Bulan ND <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
-              <select name="bln_nd" class="select select-sm w-full max-w-xs">
+              <select name="bln_nd" class="select select-sm w-full max-w-xs" required>
                 <option
-                  value="@if (!$data->tgl_nd_penunjukan) @else
+                  value="@if ($data->tgl_nd_penunjukan < 1) @else
                                   {{ date('m', strtotime($data->tgl_nd_penunjukan)) }} @endif">
-                  @if (!$data->tgl_nd_penunjukan)
+                  @if ($data->tgl_nd_penunjukan < 1)
                   @else
                     {{ date('m', strtotime($data->tgl_nd_penunjukan)) }}
                   @endif
@@ -488,13 +495,13 @@
             </div>
             <div class="form-control w-1/4">
               <label class="label">
-                <span class="label-text">Tahun ND</span>
+                <span class="label-text">Tahun ND <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
-              <select name="thn_nd" class="select select-sm w-full max-w-xs">
+              <select name="thn_nd" class="select select-sm w-full max-w-xs" required>
                 <option
-                  value="@if (!$data->tgl_nd_penunjukan) @else
+                  value="@if ($data->tgl_nd_penunjukan < 1) @else
                                 {{ date('Y', strtotime($data->tgl_nd_penunjukan)) }} @endif">
-                  @if (!$data->tgl_nd_penunjukan)
+                  @if ($data->tgl_nd_penunjukan < 1)
                   @else
                     {{ date('Y', strtotime($data->tgl_nd_penunjukan)) }}
                   @endif
@@ -512,14 +519,14 @@
           <div class="flex space-x-2">
             <div class="form-control w-1/2">
               <label class="label">
-                <span class="label-text">Supervisor</span>
+                <span class="label-text">Supervisor <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
               <input type="text" class="input input-bordered input-sm" name="fpp1"
                 value="{{ $data->fpp1 }}" />
             </div>
             <div class="form-control w-1/2">
               <label class="label">
-                <span class="label-text">Ketua Tim</span>
+                <span class="label-text">Ketua Tim <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
               <input type="text" class="input input-bordered input-sm" name="fpp2"
                 value="{{ $data->fpp2 }}" />
@@ -529,7 +536,7 @@
           <div class="flex space-x-2">
             <div class="form-control w-1/2">
               <label class="label">
-                <span class="label-text">Anggota 1</span>
+                <span class="label-text">Anggota 1 <span class="text-red-900 font-bold">(Required)</span></span>
               </label>
               <input type="text" class="input input-bordered input-sm" name="fpp3"
                 value="{{ $data->fpp3 }}" />
@@ -546,7 +553,8 @@
             <label class="label">
               <span class="label-text">PIC</span>
             </label>
-            <input type="text" class="input input-bordered input-sm" name="pic" value="{{ $data->pic }}" />
+            <input type="text" class="input input-bordered input-sm" name="pic"
+              value="{{ $data->pic }}" />
           </div>
           <div class="form-control">
             <label class="label">

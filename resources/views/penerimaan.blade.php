@@ -59,12 +59,56 @@
   </div>
 
 
-  <div class="w-full mt-2 pt-3">
-    <div class="card w-full bg-gray-50 text-primary-content">
+  <div class="w-full mt-1" x-data="{ activeTab: 0 }">
+    <div class="grid grid-cols-2 gap-4 mb-5">
+      <button @click="activeTab = 0" class="btn btn-block btn-sm">Penerimaan Pemeriksaan</button>
+      <button @click="activeTab = 1" class="btn btn-block btn-sm">Penerimaan Penagihan</button>
+    </div>
+    <div class="card w-full bg-gray-50 text-primary-content" x-show="activeTab === 0">
       <div class="card-body">
-        <h2 class="card-title font-bold">Penerimaan {{ $tahun }} Dari Kegiatan Pemeriksaan dan Penagihan</h2>
+        <h2 class="card-title font-bold">Penerimaan {{ $tahun }} Dari Kegiatan Pemeriksaan</h2>
         <div class="card-body bg-white rounded-lg">
-          <div class="">
+          <div class="overflow-x-auto">
+            <table class="display nowrap" id="tabel1" style="width: 100%">
+              <thead>
+                <tr style="font-size : 12px">
+                  <th>NPWP</th>
+                  <th>KODEMAP/KJS</th>
+                  <th>MASA PAJAK</th>
+                  <th>TANGGAL SETOR</th>
+                  <th>SKP</th>
+                  <th>JUMLAH</th>
+                  <th>SUMBER</th>
+                  <th>NTPN</th>
+                  <th>KETERANGAN</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($penerimaan_pemeriksaan as $l)
+                  <tr style="font-size : 12px">
+                    <td>{{ $l->npwp }}</td>
+                    <td>{{ $l->kode_map }}/{{ $l->kjs }}</td>
+                    <td>{{ $l->masa_pajak }}</td>
+                    <td>{{ date('d-m-Y', strtotime($l->tanggal_gabung)) }}</td>
+                    <td>{{ $l->no_skp }}</td>
+                    <td>{{ number_format($l->jumlah) }}</td>
+                    <td>{{ $l->sumber }}</td>
+                    <td>{{ $l->ntpn }}</td>
+                    <td>{{ $l->keterangan }}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card w-full bg-gray-50 text-primary-content" x-show="activeTab === 1">
+      <div class="card-body">
+        <h2 class="card-title font-bold">Penerimaan {{ $tahun }} Dari Kegiatan Penagihan</h2>
+        <div class="card-body bg-white rounded-lg">
+          <div class="overflow-x-auto">
             <table class="display nowrap" id="tabel3" style="width: 100%">
               <thead>
                 <tr style="font-size : 12px">
@@ -80,12 +124,12 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($penerimaan_all as $l)
-                  <tr>
+                @foreach ($penerimaan_penagihan as $l)
+                  <tr style="font-size : 12px">
                     <td>{{ $l->npwp }}</td>
                     <td>{{ $l->kode_map }}/{{ $l->kjs }}</td>
                     <td>{{ $l->masa_pajak }}</td>
-                    <td>{{ $l->tanggal_gabung }}</td>
+                    <td>{{ date('d-m-Y', strtotime($l->tanggal_gabung)) }}</td>
                     <td>{{ $l->no_skp }}</td>
                     <td>{{ number_format($l->jumlah) }}</td>
                     <td>{{ $l->sumber }}</td>
@@ -107,7 +151,7 @@
     $(document).ready(function() {
       $('#tabel1').DataTable({
         order: false,
-        scrollX: true,
+        scrollX: false,
         dom: 'Blfrtip',
         buttons: [
           'copy',
@@ -121,7 +165,7 @@
     $(document).ready(function() {
       $('#tabel2').DataTable({
         order: false,
-        scrollX: true,
+        scrollX: false,
         dom: 'Blfrtip',
         buttons: [
           'copy',
@@ -135,7 +179,7 @@
     $(document).ready(function() {
       $('#tabel3').DataTable({
         order: false,
-        scrollX: true,
+        scrollX: false,
         dom: 'Blfrtip',
         buttons: [
           'copy',

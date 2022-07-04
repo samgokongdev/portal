@@ -16,7 +16,15 @@ class PenerimaanController extends Controller
     public function index()
     {
         $tahun = date('Y');
-        $penerimaan_all= Penerimaan::where('thn_setor','=',$tahun)
+        $penerimaan_pemeriksaan= Penerimaan::where('thn_setor','=',$tahun)
+                                ->where('keterangan','=','Pemeriksaan')
+                                ->orWhere('keterangan','=','Pengungkapan')
+                                ->selectRaw('npwp,nama_wp,kode_map,kjs,masa_pajak,tanggal_gabung,no_skp,jumlah,sumber,keterangan,ntpn')
+                                ->get();
+        $penerimaan_penagihan= Penerimaan::where('thn_setor','=',$tahun)
+                                ->where('keterangan','!=','Pemeriksaan')
+                                ->where('keterangan','!=','Pengungkapan')
+                                ->selectRaw('npwp,nama_wp,kode_map,kjs,masa_pajak,tanggal_gabung,no_skp,jumlah,sumber,keterangan,ntpn')
                                 ->get();
         $sum_penerimaan = Penerimaan::select('jumlah')
                                 ->where('thn_setor','=',$tahun)
@@ -33,7 +41,7 @@ class PenerimaanController extends Controller
                                 ->sum('jumlah');
 
         // echo $list_penerimaan_skp;
-        return view('penerimaan',compact('tahun','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_all'));
+        return view('penerimaan',compact('tahun','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_pemeriksaan','penerimaan_penagihan'));
     }
 
     /**
@@ -55,24 +63,30 @@ class PenerimaanController extends Controller
     public function store(Request $request)
     {
         $tahun = $request->tahun;
-        $penerimaan_all= Penerimaan::where('thn_setor','=',$tahun)
-        ->get();
+        $penerimaan_pemeriksaan= Penerimaan::where('thn_setor','=',$tahun)
+                                ->where('keterangan','=','Pemeriksaan')
+                                ->orWhere('keterangan','=','Pengungkapan')
+                                ->get();
+        $penerimaan_penagihan= Penerimaan::where('thn_setor','=',$tahun)
+                                ->where('keterangan','!=','Pemeriksaan')
+                                ->where('keterangan','!=','Pengungkapan')
+                                ->get();
         $sum_penerimaan = Penerimaan::select('jumlah')
-                ->where('thn_setor','=',$tahun)
-                ->sum('jumlah');
+                                ->where('thn_setor','=',$tahun)
+                                ->sum('jumlah');
         $sum_penerimaan_penagihan = Penerimaan::select('jumlah')
-                ->where('thn_setor','=',$tahun)
-                ->where('keterangan','!=','Pemeriksaan')
-                ->where('keterangan','!=','Pengungkapan')
-                ->sum('jumlah');
+                                ->where('thn_setor','=',$tahun)
+                                ->where('keterangan','!=','Pemeriksaan')
+                                ->where('keterangan','!=','Pengungkapan')
+                                ->sum('jumlah');
         $sum_penerimaan_pemeriksaan = Penerimaan::select('jumlah')
-                ->where('thn_setor','=',$tahun)
-                ->where('keterangan','=','Pemeriksaan')
-                ->orWhere('keterangan','=','Pengungkapan')
-                ->sum('jumlah');
+                                ->where('thn_setor','=',$tahun)
+                                ->where('keterangan','=','Pemeriksaan')
+                                ->orWhere('keterangan','=','Pengungkapan')
+                                ->sum('jumlah');
 
-// echo $list_penerimaan_skp;
-        return view('penerimaan',compact('tahun','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_all'));
+        // echo $list_penerimaan_skp;
+        return view('penerimaan',compact('tahun','sum_penerimaan','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','penerimaan_pemeriksaan','penerimaan_penagihan'));
     }
 
     /**

@@ -22,7 +22,7 @@ class TunggakanController extends Controller
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
         $list_tunggakan = View_tunggakan_all::where('sp2','!=','')->orderBy('sisa_waktu','asc')->get();
         $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
-        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
+        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->orderBy('sisa_waktu','asc')->get();
         return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
@@ -65,13 +65,12 @@ class TunggakanController extends Controller
         $tgl_sp2 = $request->thn_sp2.'-'.$request->bln_sp2.'-'.$request->tgl_sp2;
         
         if(!$request->tgl_sp2p || !$request->bln_sp2p || !$request->thn_sp2p){
-            $tgl_sp2_konversi = $tgl_sp2;
             $tgl_sp2p = null;
-        }else{
-            $tgl_sp2_konversi= $tgl_sp2p;
+            $tgl_sp2_konversi = $tgl_sp2;
+        } else {
             $tgl_sp2p = $request->thn_sp2p.'-'.$request->bln_sp2p.'-'.$request->tgl_sp2p;
-        };
-
+            $tgl_sp2_konversi= $tgl_sp2p;
+        }
 
         $delete_pemeriksa_lama=Pemeriksa::where('np2',$request->np2)->delete();
         echo $jt;

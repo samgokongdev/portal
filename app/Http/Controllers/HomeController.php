@@ -8,6 +8,7 @@ use App\Models\View_tunggakan_all;
 use App\Models\Skp;
 use App\Models\Penerimaan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,7 +19,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $kode_kpp = "056";
+        $kode_kpp = "057";
         $tahun = date("Y");
         $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');

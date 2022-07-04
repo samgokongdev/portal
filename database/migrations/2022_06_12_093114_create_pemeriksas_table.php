@@ -32,6 +32,8 @@ class CreatePemeriksasTable extends Migration
             $table->string('nilai_lb')->nullable();
             $table->string('omset')->nullable();
             $table->string('potensi')->nullable();
+            $table->string('nd_ply')->nullable();
+            $table->date('tgl_nd_ply')->nullable();
             $table->timestamps();
         });
     }
