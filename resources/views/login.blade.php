@@ -38,7 +38,8 @@
           <label class="label">
             <span class="label-text">Username</span>
           </label>
-          <input name="username" type="text" placeholder="ex : 060001234" class="input input-bordered w-full max-w-xs" />
+          <input name="username" type="text" placeholder="ex : 060001234"
+            class="input input-bordered w-full max-w-xs" />
         </div>
 
         <div class="form-control w-full max-w-xs">
@@ -53,7 +54,7 @@
           <a href="{{ route('register.index') }}" class="btn btn-ghost hover:bg-secondary">Belum Punya Akun?
             Registrasi</a>
         </div>
-
+      </form>
     </div>
   </div>
 </body>

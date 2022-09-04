@@ -12,6 +12,7 @@ use App\Http\Controllers\SkpController;
 use App\Http\Controllers\PersuratanPemeriksaanController;
 use App\Http\Controllers\PortaluserController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SuratmasukController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,8 @@ Route::resource('portaluser', PortaluserController::class)->middleware('auth');
 Route::resource('persuratan', PersuratanPemeriksaanController::class)->middleware('auth');
 Route::get('buat/{id}',[PersuratanPemeriksaanController::class, 'buat'])->name('persuratan.buat')->middleware('auth');
 Route::post('carisurat',[PersuratanPemeriksaanController::class, 'cari'])->name('persuratan.cari')->middleware('auth');
+
+Route::resource('suratmasuk', SuratmasukController::class)->middleware('auth');
 
 Route::resource('tunggakan', TunggakanController::class)->middleware('auth');
 Route::get('jt',[TunggakanController::class, 'jt'])->name('tunggakan.jt')->middleware('auth');
@@ -63,6 +66,7 @@ Route::post('approve',[LhpPemeriksaanController::class, 'approve'])->name('lhp.a
 Route::resource('skp', SkpController::class)->middleware('auth');
 Route::get('rekapskp',[SkpController::class, 'rekap'])->name('skp.rekap')->middleware('auth');
 Route::post('rekapskp2',[SkpController::class, 'rekap2'])->name('skp.rekap2')->middleware('auth');
+Route::post('cariskp',[SkpController::class, 'cariskp'])->name('skp.cariskp')->middleware('auth');
 
 
 Route::resource('login', LoginController::class)->middleware('guest');

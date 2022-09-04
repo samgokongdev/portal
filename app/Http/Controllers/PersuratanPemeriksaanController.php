@@ -82,7 +82,7 @@ class PersuratanPemeriksaanController extends Controller
         } else {
             $last_num2 = Persuratan::where('jenis','=',$request->jenis)
                             ->where('tahun','=',date('Y'))
-                            ->orderBy('no','desc')
+                            ->orderBy('id','desc')
                             ->first();
             $next_num = $last_num2->no + 1;
         }

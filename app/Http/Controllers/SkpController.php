@@ -55,7 +55,7 @@ class SkpController extends Controller
      */
     public function create()
     {
-        //
+        return view('cariskp');
     }
 
     /**
@@ -176,5 +176,26 @@ class SkpController extends Controller
                         ->get();
         // echo $data_skplb;
         return view('rekapskp', compact('tahun','rekap_skpkb'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cariskp(Request $request)
+    {
+        $noskp = $request->noskp;
+        $cek = Skp::where('nomor_ket','=',$noskp)->count();
+        $hasil = Skp::where('nomor_ket','=',$noskp)->first();
+        if($cek == 0){
+            return back()->with('Error','Nomor SKP Tidak Ditemukan. Silahkan Cek Inputan atau Update data');
+        } else {
+            return view('hasilcariskp', compact('cek','hasil'));
+        }
+        
+        // echo $data_skplb;
+        
     }
 }

@@ -155,7 +155,7 @@
                 @foreach ($data1 as $d)
                   <tr>
                     <td>{{ $d->jenis }}-{{ $d->no }}/WPJ.07/KP.05/PaPj.2/{{ $d->tahun }}</td>
-                    <td>{{ date('d M Y', strtotime($d->tgl)) }}</td>
+                    <td>{{ date('d M Y', strtotime($d->created_at)) }}</td>
                     <td>{{ $d->tujuan }}</td>
                     <td>{{ $d->perihal }}</td>
                     <td>{{ $d->sp2 }}</td>
@@ -206,7 +206,7 @@
                 @foreach ($data2 as $d)
                   <tr>
                     <td>{{ $d->jenis }}-{{ $d->no }}/WPJ.07/KP.05/PaPj.2/{{ $d->tahun }}</td>
-                    <td>{{ date('d M Y', strtotime($d->tgl)) }}</td>
+                    <td>{{ date('d M Y', strtotime($d->created_at)) }}</td>
                     <td>{{ $d->tujuan }}</td>
                     <td>{{ $d->perihal }}</td>
                     <td>{{ $d->sp2 }}</td>
@@ -257,7 +257,7 @@
                 @foreach ($data3 as $d)
                   <tr>
                     <td>{{ $d->jenis }}-{{ $d->no }}/WPJ.07/KP.05/PaPj.2/{{ $d->tahun }}</td>
-                    <td>{{ date('d M Y', strtotime($d->tgl)) }}</td>
+                    <td>{{ date('d M Y', strtotime($d->created_at)) }}</td>
                     <td>{{ $d->tujuan }}</td>
                     <td>{{ $d->perihal }}</td>
                     <td>{{ $d->sp2 }}</td>
