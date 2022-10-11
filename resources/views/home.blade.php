@@ -124,7 +124,7 @@
           </div>
         </div>
 
-        <div class="stats bg-green-900 text-ora text-white">
+        {{-- <div class="stats bg-green-900 text-ora text-white">
           <div class="stat">
             <div class="stat-title font-medium">Penerimaan Pemeriksaan</div>
             <div class="stat-value" style="font-size: 24px">{{ number_format($sum_penerimaan_pemeriksaan) }}</div>
@@ -133,9 +133,9 @@
                   Detail</a></button>
             </div>
           </div>
-        </div>
+        </div> --}}
 
-        <div class="stats bg-green-900 text-ora text-white">
+        {{-- <div class="stats bg-green-900 text-ora text-white">
           <div class="stat">
             <div class="stat-title font-medium">Penerimaan Penagihan</div>
             <div class="stat-value" style="font-size: 24px">{{ number_format($sum_penerimaan_penagihan) }}</div>
@@ -144,7 +144,7 @@
                   Detail</a></button>
             </div>
           </div>
-        </div>
+        </div> --}}
 
       </div>
   @endif

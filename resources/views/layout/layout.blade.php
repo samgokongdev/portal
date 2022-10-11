@@ -161,7 +161,7 @@
             Laporan Hasil Pemeriksaan
           </a>
         </li>
-        <li>
+        {{-- <li>
           <a href="{{ route('penerimaan.index') }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -170,7 +170,7 @@
             </svg>
             Penerimaan PKM
           </a>
-        </li>
+        </li> --}}
 
         <li>
           <a href="{{ route('lhp.rekaplhp') }}">
@@ -183,7 +183,7 @@
           </a>
         </li>
 
-        <li>
+        {{-- <li>
           <a href="{{ route('penerimaan.rekap') }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -192,7 +192,7 @@
             </svg>
             Rekapitulasi Penerimaan
           </a>
-        </li>
+        </li> --}}
 
         <li class="menu-title">
           <span>SKP Hasil Pemeriksaan</span>

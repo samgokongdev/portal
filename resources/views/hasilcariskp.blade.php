@@ -57,14 +57,28 @@
       <label class="label">
         <span class="label-text">Supervisor</span>
       </label>
-      <input type="text" class="input input-bordered input-xs bg-gray-100" readonly value="{{ $hasil->fpp1 }}" />
+      <input type="text" class="input input-bordered input-xs bg-gray-100" readonly value="{{ $hasil->spv }}" />
     </div>
 
     <div class="form-control">
       <label class="label">
-        <span class="label-text">PIC</span>
+        <span class="label-text">KETUA TIM</span>
       </label>
-      <input type="text" class="input input-bordered input-xs bg-gray-100" readonly value="{{ $hasil->pic }}" />
+      <input type="text" class="input input-bordered input-xs bg-gray-100" readonly value="{{ $hasil->kt }}" />
+    </div>
+
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">ANGGOTA 1</span>
+      </label>
+      <input type="text" class="input input-bordered input-xs bg-gray-100" readonly value="{{ $hasil->ang_1 }}" />
+    </div>
+
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">ANGGOTA 2</span>
+      </label>
+      <input type="text" class="input input-bordered input-xs bg-gray-100" readonly value="{{ $hasil->ang_2 }}" />
     </div>
   </div>
 @endsection
