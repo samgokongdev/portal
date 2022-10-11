@@ -18,7 +18,6 @@
               <!-- head -->
               <thead>
                 <tr>
-                  <th>KELOMPOK</th>
                   <th>Nama SPV</th>
                   <th>Jumlah LHP</th>
                   <th>Konversi</th>
@@ -28,22 +27,15 @@
               <tbody>
                 @foreach ($rekap_per_spv as $r)
                   <tr>
-                    <th>
-                      @if (!$r->kelompok)
-                        NON FPP
-                      @else
-                        {{ $r->kelompok }}
-                      @endif
-                    </th>
-                    <td>{{ $r->fpp1 }}</td>
+                    <td>{{ $r->spv }}</td>
                     <td>{{ $r->jumlah_lhp }}</td>
                     <td>{{ $r->konversi }}</td>
                     <td>
 
                       <a class="btn btn-neutral btn-sm"
-                        @if (!$r->fpp1) href="#"
+                        @if (!$r->spv) href="#"
                       @else
-                      href="{{ route('lhp.detailperspv', $r->fpp1) }}" @endif>
+                      href="{{ route('lhp.detailperspv', $r->spv) }}" @endif>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                           stroke="currentColor" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -72,37 +64,29 @@
               <!-- head -->
               <thead>
                 <tr>
-                  <th>KELOMPOK</th>
-                  <th>PIC</th>
+                  <th>KETUA TIM</th>
                   <th>Jumlah LHP</th>
                   <th>Konversi</th>
                   <th>Detail</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($rekap_per_pic as $r)
+                @foreach ($rekap_per_kt as $r)
                   <tr>
-                    <th>
-                      @if (!$r->kelompok)
-                        NON FPP
-                      @else
-                        {{ $r->kelompok }}
-                      @endif
-                    </th>
                     <td>
-                      @if (!$r->pic)
+                      @if (!$r->kt)
                         unnasign
                       @else
-                        {{ $r->pic }}
+                        {{ $r->kt }}
                       @endif
                     </td>
                     <td>{{ $r->jumlah_lhp }}</td>
                     <td>{{ $r->konversi }}</td>
                     <td>
                       <a class="btn btn-neutral btn-sm"
-                        @if (!$r->pic) href="#"
+                        @if (!$r->kt) href="#"
                       @else
-                      href="{{ route('lhp.detailperpic', $r->pic) }}" @endif>
+                      href="{{ route('lhp.detailperpic', $r->kt) }}" @endif>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                           stroke="currentColor" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -144,6 +128,7 @@
   <script>
     $(document).ready(function() {
       $('#tabel2').DataTable({
+        order: false,
         scrollX: true,
         dom: 'Blfrtip',
         buttons: [

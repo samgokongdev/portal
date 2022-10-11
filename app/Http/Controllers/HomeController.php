@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lhp;
 use App\Models\Tunggakan;
 use App\Models\View_lhp_all;
 use App\Models\View_tunggakan_all;
@@ -21,11 +22,11 @@ class HomeController extends Controller
     {
         $kode_kpp = "057";
         $tahun = date("Y");
-        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
-        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
-        $lhp = View_lhp_all::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
-        $konversi = View_lhp_all::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->sum('konversi');
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $lhp = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
+        $konversi = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->sum('konversi');
         $sum_skpkb = Skp::where('tahun_ket','=',$tahun)
                         ->where('jns_skp','!=','SKPLB')
                         ->where('jns_skp','!=','SKPN')

@@ -18,35 +18,39 @@
               <!-- head -->
               <thead>
                 <tr>
-                  <th>KELOMPOK</th>
-                  <th>Nama PIC</th>
+                  <th>Nama SPV</th>
+                  <th>Nama Ketua Tim</th>
                   <th>Kode Pemeriksaan</th>
+                  <th>Periode Pemeriksaan</th>
                   <th>NOMOR LHP</th>
                   <th>TANGGAL LHP</th>
+                  <th>NAMA WP</th>
                   <th>KONVERSI</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data_per_pic as $r)
                   <tr style="font-size: 12px">
-                    <th>
-                      @if (!$r->kelompok)
-                        NON FPP
-                      @else
-                        {{ $r->kelompok }}
-                      @endif
-                    </th>
                     <td>
-                      @if (!$r->pic)
+                      @if (!$r->spv)
                         UNNASIGN
                       @else
-                        {{ $r->pic }}
+                        {{ $r->spv }}
+                      @endif
+                    </td>
+                    <td>
+                      @if (!$r->kt)
+                        UNNASIGN
+                      @else
+                        {{ $r->kt }}
                       @endif
                     </td>
                     <td>{{ $r->kode_rik }}</td>
+                    <td>{{ $r->periode_1 }} s.d. {{ $r->periode_2 }}</td>
                     <td>{{ $r->lhp }}</td>
-                    <td>{{ $r->tgl_lhp }}</td>
-                    <td>{{ $r->konversi }}</td>
+                    <td>{{ date('d M Y', strtotime($r->tgl_lhp)) }}</td>
+                    <td>{{ $r->nama_wp }}</td>
+                    <td class="text-right">{{ $r->konversi }}</td>
                   </tr>
                 @endforeach
               </tbody>

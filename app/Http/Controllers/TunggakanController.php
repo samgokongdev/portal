@@ -18,11 +18,11 @@ class TunggakanController extends Controller
      */
     public function index()
     {
-        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
-        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
-        $list_tunggakan = View_tunggakan_all::where('sp2','!=','')->orderBy('sisa_waktu','asc')->get();
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
-        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->orderBy('sisa_waktu','asc')->get();
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $list_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $whatsapp = Tunggakan::where('sisa_hari','>','-1')->where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
         return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
@@ -164,11 +164,11 @@ class TunggakanController extends Controller
      */
     public function jt()
     {
-        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
-        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
-        $list_tunggakan = View_tunggakan_all::where('sp2','!=','')->where('sisa_waktu','<','14')->orderBy('sisa_waktu','asc')->get();
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
-        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $list_tunggakan = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $whatsapp = Tunggakan::where('sisa_hari','>','-1')->where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
         return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
@@ -179,28 +179,28 @@ class TunggakanController extends Controller
      */
     public function np2belumterbit()
     {
-        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->count('id_pemeriksaan');
-        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count('id_pemeriksaan');
-        $list_tunggakan = View_tunggakan_all::where('sp2','=','')->orderBy('sisa_waktu','asc')->get();
-        $pemeriksaan_jt_dekat = View_tunggakan_all::where('sisa_waktu','<','14')->where('sp2','!=','')->count();
-        $whatsapp = View_tunggakan_all::where('sisa_waktu','>','-1')->where('sisa_waktu','<','14')->where('sp2','!=','')->get();
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $list_tunggakan = Tunggakan::where('sp2','=','')->orderBy('sisa_hari','asc')->get();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $whatsapp = Tunggakan::where('sisa_hari','>','-1')->where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
         return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
     public function rekapTunggakanPerFpp()
     {
-        $rekap = View_tunggakan_all::where('sp2','!=','')
-                                    ->groupBy('fpp1')
-                                    ->select('kelompok','fpp1', DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) = "2" THEN np2 END) as ppn'), DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) != "2" THEN np2 END) as non_ppn'))
-                                    ->orderBy('kelompok','asc')
+        $rekap_per_spv = Tunggakan::where('sp2','!=','')
+                                    ->groupBy('spv')
+                                    ->select('spv', DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) = "2" THEN np2 END) as ppn'), DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) != "2" THEN np2 END) as non_ppn'))
+                                    ->orderBy('spv','asc')
                                     ->get();
-        $rekap_per_pic = View_tunggakan_all::where('sp2','!=','')
-                                    ->groupBy('pic')
-                                    ->select('pic', DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) = "2" THEN np2 END) as ppn'), DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) != "2" THEN np2 END) as non_ppn'))
-                                    ->orderBy('pic','desc')
+        $rekap_per_tim = Tunggakan::where('sp2','!=','')
+                                    ->groupBy('kt')
+                                    ->select('kt', DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) = "2" THEN np2 END) as ppn'), DB::raw('count(case when sp2 != "" and LEFT(kode_rik,1) != "2" THEN np2 END) as non_ppn'))
+                                    ->orderBy('kt','asc')
                                     ->get();
 
-        return view('rekapitulasi', compact('rekap','rekap_per_pic'));
+        return view('rekapitulasi', compact('rekap_per_spv','rekap_per_tim'));
         // echo $tes;
     }
 }

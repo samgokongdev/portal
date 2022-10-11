@@ -29,9 +29,9 @@
 
     <div class="stats bg-red-900 text-white  shadow">
       <div class="stat">
-        <div class="stat-title">Tunggakan JT < 14 Hari</div>
+        <div class="stat-title">Tunggakan JT =< 14 Hari</div>
             <div class="stat-value">{{ $pemeriksaan_jt_dekat }} SP2</div>
-            <div class="stat-desc">Jumlah SP2 dengan JT kurang dari 14 Hari</div>
+            <div class="stat-desc">Jumlah SP2 dengan JT Kurang atau sama dengan 14 Hari Lagi</div>
             <a class="btn btn-sm btn-success" href="{{ route('tunggakan.jt') }}">Lihat Detail</a>
         </div>
       </div>
@@ -58,8 +58,10 @@
         </div>
         <div class="collapse-content">
           <div class="mockup-code">
+            <pre data-prefix="$">*Daftar Pemeriksaan JT =< 14* Hari</pre>
+            <pre data-prefix="$"></pre>
             @foreach ($whatsapp as $w)
-              <pre data-prefix="$"><code>*{{ $number }}. {{ $w->nama_wp }}* ({{ $w->periode_1 }} - {{ $w->periode_2 }}) => JATUH TEMPO {{ date('d-m-Y', strtotime($w->jt)) }} ( {{ $w->sisa_waktu }} Hari Lagi)</code></pre>
+              <pre data-prefix="$"><code>*{{ $number }}. {{ $w->nama_wp }}* ({{ $w->periode_1 }} - {{ $w->periode_2 }}) => *JT {{ date('d M Y', strtotime($w->jt_daluarsa)) }}* ( {{ $w->sisa_hari }} Hari Lagi)</code></pre>
               <?php $number++; ?>
             @endforeach
           </div>
@@ -85,18 +87,19 @@
                     <th>Nomor SP2</th>
                     <th>JT</th>
                     <th>Supervisor</th>
-                    <th>PIC</th>
-                    <th>Action</th>
+                    <th>Ketua Tim</th>
+                    <th>Anggota 1</th>
+                    <th>Anggota 2</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach ($list_tunggakan as $l)
                     <tr style="font-size : 12px">
                       <td>
-                        @if (is_null($l->sisa_waktu))
+                        @if (is_null($l->sisa_hari))
                           No Data
                         @else
-                          {{ $l->sisa_waktu }}
+                          {{ $l->sisa_hari }}
                         @endif
                       </td>
                       <th>{{ $l->np2 }}</th>
@@ -106,36 +109,39 @@
                       <td>{{ $l->periode_1 }} - {{ $l->periode_2 }}</td>
                       <td>{{ $l->sp2 }}</td>
                       <td>
-                        @if (!$l->jt)
+                        @if ($l->jt_daluarsa == '0000-00-00')
                           No Data
                         @else
-                          {{ date('d-m-Y', strtotime($l->jt)) }}
+                          {{ date('d-m-Y', strtotime($l->jt_daluarsa)) }}
                         @endif
                       </td>
 
                       <td>
-                        @if (!$l->fpp1)
+                        @if (!$l->spv)
                           No Data
                         @else
-                          {{ $l->fpp1 }}
+                          {{ $l->spv }}
                         @endif
                       </td>
                       <td>
-                        @if (!$l->pic)
+                        @if (!$l->kt)
                           No Data
                         @else
-                          {{ $l->pic }}
+                          {{ $l->kt }}
                         @endif
                       </td>
                       <td>
-                        <a href="{{ route('tunggakan.edit', $l->np2) }}"
-                          class="btn btn-sm flex items-center justify-center tooltip tooltip-left" data-tip="Edit"><svg
-                            xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-                        </a>
+                        @if (!$l->ang_1)
+                          No Data
+                        @else
+                          {{ $l->ang_1 }}
+                        @endif
+                      </td>
+                      <td>
+                        @if (!$l->ang_2)
+                        @else
+                          {{ $l->ang_2 }}
+                        @endif
                       </td>
                     </tr>
                   @endforeach
@@ -155,9 +161,14 @@
           order: false,
           scrollX: true,
           dom: 'Blfrtip',
-          buttons: [
-            'copy',
-            'csvHtml5',
+          buttons: [{
+              extend: 'pdfHtml5',
+              orientation: 'landscape',
+              pageSize: 'LEGAL'
+            },
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5'
           ]
         });
       });

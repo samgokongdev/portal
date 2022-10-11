@@ -21,13 +21,14 @@
       <div class="stat">
         <div class="stat-title">Jumlah Konversi</div>
         <div class="stat-value">
-          @php
+          {{ $konversi }}
+          {{-- @php
             $total = 0;
           @endphp
           @foreach ($list_lhp as $l)
             <div class="hidden">{{ $total += $l->konversi }}</div>
           @endforeach
-          {{ $total }}
+          {{ $total }} --}}
         </div>
         <div class="stat-desc">Jumlah Konversi Atas Hasil Pemeriksaan</div>
       </div>
@@ -76,11 +77,12 @@
                   <th>TGL SP2</th>
                   <th>NOMOR LHP</th>
                   <th>TGL LHP</th>
-                  <th>CEK KIRIM PLY</th>
                   <th>SUPERVISOR</th>
-                  <th>PIC</th>
+                  <th>KETUA TIM</th>
+                  <th>ANGGOTA 1</th>
+                  <th>ANGGOTA 2</th>
                   <th>KONVERSI</th>
-                  <th>AKSIS</th>
+                  <th>AKSI</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,24 +111,30 @@
                       @endif
                     </td>
                     <td>
-                      @if ($l->nd_ply == '')
-                        BELUM DIKIRIM
+                      @if (!$l->spv)
+                        No Data
                       @else
-                        {{ $l->nd_ply }}
+                        {{ $l->spv }}
                       @endif
                     </td>
                     <td>
-                      @if (!$l->fpp1)
+                      @if (!$l->kt)
                         No Data
                       @else
-                        {{ $l->fpp1 }}
+                        {{ $l->kt }}
                       @endif
                     </td>
                     <td>
-                      @if (!$l->pic)
+                      @if (!$l->ang_1)
                         No Data
                       @else
-                        {{ $l->pic }}
+                        {{ $l->ang_1 }}
+                      @endif
+                    </td>
+                    <td>
+                      @if (!$l->ang_2)
+                      @else
+                        {{ $l->ang_2 }}
                       @endif
                     </td>
                     <td>
@@ -138,15 +146,6 @@
                     </td>
                     <td>
                       <div class="flex space-x-2">
-                        <a href="{{ route('lhp.edit', $l->np2) }}"
-                          class="btn btn-sm flex items-center justify-center tooltip tooltip-left" data-tip="Edit"><svg
-                            xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-                        </a>
-
                         <a href="{{ route('lhp.arsiplhp', $l->np2) }}"
                           class="btn btn-sm flex items-center justify-center tooltip tooltip-left" data-tip="ARSIP">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"

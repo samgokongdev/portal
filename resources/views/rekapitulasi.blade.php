@@ -18,7 +18,6 @@
               <!-- head -->
               <thead>
                 <tr>
-                  <th>KELOMPOK</th>
                   <th>Nama SPV</th>
                   <th>Tunggakan PPN</th>
                   <th>Tunggakan Non PPN</th>
@@ -26,10 +25,15 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($rekap as $r)
+                @foreach ($rekap_per_spv as $r)
                   <tr>
-                    <th>{{ $r->kelompok }}</th>
-                    <td>{{ $r->fpp1 }}</td>
+                    <td>
+                      @if ($r->spv == '')
+                        unnasign
+                      @else
+                        {{ $r->spv }}
+                      @endif
+                    </td>
                     <td>{{ $r->ppn }}</td>
                     <td>{{ $r->non_ppn }}</td>
                     <td>{{ $r->ppn + $r->non_ppn }}</td>
@@ -46,7 +50,7 @@
   <div class="w-full mt-2 pt-3">
     <div class="card w-full bg-gray-100 text-primary-content">
       <div class="card-body">
-        <h2 class="card-title font-bold">Rekapitulasi Tunggakan Pajak Per PIC</h2>
+        <h2 class="card-title font-bold">Rekapitulasi Tunggakan Pajak Per Ketua Tim</h2>
         <div class="card-body bg-white rounded-lg">
           <div class="overflow-x-auto">
             <table class="table table-zebra w-full" id="tabel2" style="width: 100%">
@@ -60,13 +64,13 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($rekap_per_pic as $r)
+                @foreach ($rekap_per_tim as $r)
                   <tr>
                     <td>
-                      @if ($r->pic == '')
+                      @if ($r->kt == '')
                         unnasign
                       @else
-                        {{ $r->pic }}
+                        {{ $r->kt }}
                       @endif
                     </td>
                     <td>{{ $r->ppn }}</td>

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DaftarLhp;
 use App\Models\Digifile;
+use App\Models\Lhp;
 use App\Models\Pemeriksa;
 use App\Models\Permohonan;
 use App\Models\Skp;
@@ -23,28 +24,10 @@ class LhpPemeriksaanController extends Controller
     {
         $tahun = date("Y");
         $kode_kpp = "057";
-        $jumlah_lhp = DaftarLhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
-        $list_lhp = DB::table('daftar_lhps')
-            ->leftJoin('pemeriksas', 'daftar_lhps.np2', '=', 'pemeriksas.np2')
-            ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic', 'pemeriksas.nd_ply', 'pemeriksas.tgl_nd_ply',
-            DB::raw('
-            CASE
-                WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
-                WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.8
-                WHEN left(daftar_lhps.kode_rik,1) = 5 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
-		        WHEN left(daftar_lhps.kode_rik,1) = 5 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.8 
-                WHEN left(daftar_lhps.kode_rik,1) != 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 0.3
-                WHEN left(daftar_lhps.kode_rik,1) != 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.25
-            END as konversi
-            ')
-            )
-            ->where('daftar_lhps.up2','=',$kode_kpp)
-            ->where('daftar_lhps.th_lhp','=',$tahun)
-            ->orderBy('daftar_lhps.lhp','desc')
-            ->get();
-        // dd($test);
-        // $where('up2','=',$kode_kpp) = DaftarLhp::where('up2','=',$kode_kpp)->where('up2','=',$kode_kpp)->orderBy('lhp','desc')->get();
-        return view('lhp',compact('list_lhp','jumlah_lhp','tahun'));
+        $jumlah_lhp = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
+        $konversi = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->sum('konversi');
+        $list_lhp = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->orderBy('tgl_lhp','desc')->get();
+        return view('lhp',compact('list_lhp','jumlah_lhp','tahun','konversi'));
     }
 
     /**
@@ -71,28 +54,30 @@ class LhpPemeriksaanController extends Controller
 
         $tahun = $request->tahun;
         $kode_kpp = "057";
-        $jumlah_lhp = DaftarLhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
-        $list_lhp = DB::table('daftar_lhps')
-            ->leftJoin('pemeriksas', 'daftar_lhps.np2', '=', 'pemeriksas.np2')
-            ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic', 'pemeriksas.nd_ply', 'pemeriksas.tgl_nd_ply',
-            DB::raw('
-            CASE
-                WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
-                WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.8
-                WHEN left(daftar_lhps.kode_rik,1) = 5 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
-		        WHEN left(daftar_lhps.kode_rik,1) = 5 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.8 
-                WHEN left(daftar_lhps.kode_rik,1) != 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 0.3
-                WHEN left(daftar_lhps.kode_rik,1) != 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.25
-            END as konversi
-            ')
-            )
-            ->where('daftar_lhps.up2','=',$kode_kpp)
-            ->where('daftar_lhps.th_lhp','=',$tahun)
-            ->orderBy('daftar_lhps.lhp','desc')
-            ->get();
+        $jumlah_lhp = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
+        $konversi = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->sum('konversi');
+        $list_lhp = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->orderBy('tgl_lhp','desc')->get();
+        // $list_lhp = DB::table('daftar_lhps')
+        //     ->leftJoin('pemeriksas', 'daftar_lhps.np2', '=', 'pemeriksas.np2')
+        //     ->select('daftar_lhps.*', 'pemeriksas.fpp1', 'pemeriksas.fpp2', 'pemeriksas.fpp3', 'pemeriksas.fpp4', 'pemeriksas.pic', 'pemeriksas.nd_ply', 'pemeriksas.tgl_nd_ply',
+        //     DB::raw('
+        //     CASE
+        //         WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
+        //         WHEN left(daftar_lhps.kode_rik,1) = 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.8
+        //         WHEN left(daftar_lhps.kode_rik,1) = 5 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 1
+		//         WHEN left(daftar_lhps.kode_rik,1) = 5 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.8 
+        //         WHEN left(daftar_lhps.kode_rik,1) != 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) < 253 THEN 0.3
+        //         WHEN left(daftar_lhps.kode_rik,1) != 1 and TIMESTAMPDIFF(DAY,pemeriksas.tgl_sp2_konversi,daftar_lhps.tgl_lhp) > 252 THEN 0.25
+        //     END as konversi
+        //     ')
+        //     )
+        //     ->where('daftar_lhps.up2','=',$kode_kpp)
+        //     ->where('daftar_lhps.th_lhp','=',$tahun)
+        //     ->orderBy('daftar_lhps.lhp','desc')
+        //     ->get();
         // dd($test);
         // $where('up2','=',$kode_kpp) = DaftarLhp::where('up2','=',$kode_kpp)->where('up2','=',$kode_kpp)->orderBy('lhp','desc')->get();
-        return view('lhp',compact('list_lhp','jumlah_lhp','tahun'));
+        return view('lhp',compact('list_lhp','jumlah_lhp','tahun','konversi'));
     }
 
     /**
@@ -256,19 +241,19 @@ class LhpPemeriksaanController extends Controller
     {
         $tahun = date("Y");
         $kode_kpp = "057";
-        $rekap_per_spv = View_lhp_all::selectRaw('fpp1,kelompok, sum(konversi) as konversi, count(lhp) as jumlah_lhp')
+        $rekap_per_spv = Lhp::selectRaw('spv, sum(konversi) as konversi, count(lhp) as jumlah_lhp')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
-                                    ->groupBy('fpp1')
-                                    ->orderBy('kelompok','asc')
+                                    ->groupBy('spv')
+                                    ->orderBy('konversi','desc')
                                     ->get();
-        $rekap_per_pic = View_lhp_all::selectRaw('pic,kelompok, sum(konversi) as konversi, count(lhp) as jumlah_lhp')
+        $rekap_per_kt = Lhp::selectRaw('kt, sum(konversi) as konversi, count(lhp) as jumlah_lhp')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
-                                    ->groupBy('pic')
-                                    ->orderBy('kelompok','asc')
+                                    ->groupBy('kt')
+                                    ->orderBy('konversi','desc')
                                     ->get();
-        return view('rekaplhp', compact('tahun','rekap_per_spv','rekap_per_pic'));
+        return view('rekaplhp', compact('tahun','rekap_per_spv','rekap_per_kt'));
     }
 
     /**
@@ -282,11 +267,11 @@ class LhpPemeriksaanController extends Controller
         $tahun = date("Y");
         $keyword = $id;
         $kode_kpp = '057';
-        $data_per_pic = View_lhp_all::selectRaw('pic,kelompok,lhp,tgl_lhp,kode_rik,konversi')
+        $data_per_pic = Lhp::selectRaw('spv,kt,nama_wp,periode_1,periode_2,lhp,tgl_lhp,kode_rik,konversi')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
-                                    ->where('fpp1','=',$keyword)
-                                    ->orderBy('pic','asc')
+                                    ->where('spv','=',$keyword)
+                                    ->orderBy('tgl_lhp','desc')
                                     ->get();
         // echo $data_per_pic;
         return view('detailrekapspv', compact('tahun','data_per_pic'));
@@ -303,11 +288,11 @@ class LhpPemeriksaanController extends Controller
         $tahun = date("Y");
         $keyword = $id;
         $kode_kpp = '057';
-        $data_per_pic = View_lhp_all::selectRaw('pic,kelompok,lhp,tgl_lhp,kode_rik,konversi')
+        $data_per_pic = Lhp::selectRaw('spv,kt,nama_wp,periode_1,periode_2,lhp,tgl_lhp,kode_rik,konversi')
                                     ->where('up2','=',$kode_kpp)
                                     ->where('th_lhp','=',$tahun)
-                                    ->where('pic','=',$keyword)
-                                    ->orderBy('pic','asc')
+                                    ->where('kt','=',$keyword)
+                                    ->orderBy('tgl_lhp','desc')
                                     ->get();
         // echo $data_per_pic;
         return view('detailrekapspv', compact('tahun','data_per_pic'));
@@ -351,7 +336,7 @@ class LhpPemeriksaanController extends Controller
         $cek = Permohonan::where('np2','=',$id)->where('is_approve','=',1)->where('pemohon','=',$pemohon)->count();
         if($roles > 4)
         {
-            $data_inti = View_lhp_all::where('np2','=',$id)->first();
+            $data_inti = Lhp::where('np2','=',$id)->first();
             $data_skpkb = Skp::where('np2','=',$id)
             ->where('jns_skp','!=','SKPLB')
             ->where('jns_skp','!=','SKPN')

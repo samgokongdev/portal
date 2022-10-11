@@ -9,21 +9,6 @@
   </div>
 
   <div class="grid grid-cols-4 gap-4">
-    <div
-      @if ($data_inti->nd_ply == '') class="stats bg-red-900 text-white"
-    @else
-    class="stats bg-green-900 text-white" @endif>
-      <div class="stat">
-        <div class="stat-title font-medium">Status Kirim Ke Pelayanan</div>
-        <div class="stat-value">
-          @if ($data_inti->nd_ply == '')
-            BELUM KIRIM
-          @else
-            TERKIRIM
-          @endif
-        </div>
-      </div>
-    </div>
 
     <div class="stats bg-primary text-primary-content">
       <div class="stat">
@@ -106,7 +91,7 @@
               <span class="label-text text-xs">Tahun (Periode Pemeriksaan)</span>
             </label>
             <input readonly type="text" class="input input-bordered w-full input-xs bg-gray-200"
-              value="{{ $data_inti->tahun_pemeriksaan }} ({{ $data_inti->periode_1 }}-{{ $data_inti->periode_2 }})" />
+              value="{{ $data_inti->thn_pajak }} ({{ $data_inti->periode_1 }}-{{ $data_inti->periode_2 }})" />
           </div>
           <div class="form-control w-full">
             <label class="label">
@@ -117,42 +102,35 @@
           </div>
           <div class="form-control w-full">
             <label class="label">
-              <span class="label-text text-xs">Single Tax / All Tax </span>
-            </label>
-            <input readonly type="text" class="input input-bordered w-full input-xs bg-gray-200"
-              value="@if ($data_inti->jenis_kode == 1) ALL TAX @else SINGLE TAX @endif" />
-          </div>
-          <div class="form-control w-full">
-            <label class="label">
               <span class="label-text text-xs">Supervisor </span>
             </label>
             <input readonly type="text" class="input input-bordered w-full input-xs bg-gray-200"
-              value="{{ $data_inti->fpp1 }}" />
+              value="{{ $data_inti->spv }}" />
           </div>
           <div class="form-control w-full">
             <label class="label">
               <span class="label-text text-xs">Ketua Tim </span>
             </label>
             <input readonly type="text" class="input input-bordered w-full input-xs bg-gray-200"
-              value="{{ $data_inti->fpp2 }}" />
+              value="{{ $data_inti->kt }}" />
           </div>
           <div class="form-control w-full">
             <label class="label">
               <span class="label-text text-xs">Anggota 1 </span>
             </label>
             <input readonly type="text" class="input input-bordered w-full input-xs bg-gray-200"
-              value="{{ $data_inti->fpp3 }}" />
+              value="{{ $data_inti->ang_1 }}" />
           </div>
           <div class="form-control w-full">
             <label class="label">
               <span class="label-text text-xs">Anggota 2 </span>
             </label>
             <input readonly type="text" class="input input-bordered w-full input-xs bg-gray-200"
-              value="{{ $data_inti->fpp4 }}" />
+              value="{{ $data_inti->ang_2 }}" />
           </div>
         </div>
       </div>
-      <div class="card w-full bg-gray-100 text-primary-content mt-4">
+      {{-- <div class="card w-full bg-gray-100 text-primary-content mt-4">
         <div class="card-body">
           <form method="post" action="{{ route('lhp.update', $data_inti->np2) }}">
             @csrf
@@ -176,7 +154,7 @@
             <button type="submit" class="btn btn-block mt-4">KIRIM ND</button>
           </form>
         </div>
-      </div>
+      </div> --}}
     </div>
     <div class="w-full mt-2 pt-3 col-span-2">
       <div class="card w-full bg-gray-100 text-primary-content">
