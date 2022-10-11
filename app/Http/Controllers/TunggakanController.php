@@ -187,6 +187,51 @@ class TunggakanController extends Controller
         return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function belumsppl()
+    {
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $list_tunggakan = Tunggakan::where('sp2','!=','')->where('tgl_sppl','=','0000-00-00')->orderBy('sisa_hari','asc')->get();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $whatsapp = Tunggakan::where('sisa_hari','>','-1')->where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sphpbulanini()
+    {
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $list_tunggakan = Tunggakan::where('sp2','!=','')->whereMonth('max_sphp',date('m'))->whereYear('max_sphp',date('Y'))->orderBy('sisa_hari','asc')->get();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $whatsapp = Tunggakan::where('sisa_hari','>','-1')->where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function lhpbulanini()
+    {
+        $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
+        $list_tunggakan = Tunggakan::where('sp2','!=','')->whereMonth('max_lhp',date('m'))->whereYear('max_sphp',date('Y'))->orderBy('sisa_hari','asc')->get();
+        $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $whatsapp = Tunggakan::where('sisa_hari','>','-1')->where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->orderBy('sisa_hari','asc')->get();
+        return view('tunggakan', compact('list_tunggakan','rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','whatsapp'));
+    }
+
     public function rekapTunggakanPerFpp()
     {
         $rekap_per_spv = Tunggakan::where('sp2','!=','')

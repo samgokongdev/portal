@@ -23,6 +23,9 @@ class HomeController extends Controller
         $kode_kpp = "057";
         $tahun = date("Y");
         $rekap_tunggakan = Tunggakan::where('sp2','!=','')->where('fg_jt','=','OK')->count();
+        $belumsppl = Tunggakan::where('sp2','!=','')->where('tgl_sppl','=','0000-00-00')->count();
+        $sphpbulanini = Tunggakan::where('sp2','!=','')->whereMonth('max_sphp',date('m'))->whereYear('max_sphp',date('Y'))->count();
+        $lhpbulanini = Tunggakan::where('sp2','!=','')->whereMonth('max_lhp',date('m'))->whereYear('max_sphp',date('Y'))->count();
         $np2_belum_sp2 = Tunggakan::where('sp2','=','')->count();
         $pemeriksaan_jt_dekat = Tunggakan::where('sisa_hari','<','15')->where('sp2','!=','')->where('fg_jt','=','OK')->count();
         $lhp = Lhp::where('up2','=',$kode_kpp)->where('th_lhp','=',$tahun)->count();
@@ -47,7 +50,7 @@ class HomeController extends Controller
                         ->orWhere('keterangan','=','Pengungkapan')
                         ->sum('jumlah');
         // echo $rekap_tunggakan;
-        return view('home',compact('rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','lhp','konversi','sum_skpkb','sum_skplb','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan')); 
+        return view('home',compact('rekap_tunggakan','np2_belum_sp2','pemeriksaan_jt_dekat','lhpbulanini','sphpbulanini','lhp','konversi','sum_skpkb','sum_skplb','sum_penerimaan_penagihan','sum_penerimaan_pemeriksaan','belumsppl')); 
     }
 
     /**

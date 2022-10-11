@@ -72,7 +72,9 @@
                   <th>JUMLAH_KET (IDR)</th>
                   <th>SUMBER DOKUMEN</th>
                   <th>SUPERVISOR</th>
-                  <th>PIC</th>
+                  <th>KETUA TIM</th>
+                  <th>ANGGOTA 1</th>
+                  <th>ANGGOTA 2</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,12 +88,14 @@
                     <td>{{ $d->pasal_skp }}</td>
                     <td>{{ $d->masa_1 }}-{{ $d->masa_2 }}/{{ $d->tahun_pajak }}</td>
                     <td>{{ $d->mata_uang }}</td>
-                    <td>{{ number_format($d->jumlah_ket) }}</td>
-                    <td>{{ number_format($d->kurs) }}</td>
-                    <td>{{ number_format($d->jumlah_ket_idr) }}</td>
+                    <td class="text-right">{{ number_format($d->jumlah_ket) }}</td>
+                    <td class="text-right">{{ number_format($d->kurs) }}</td>
+                    <td class="text-right">{{ number_format($d->jumlah_ket_idr) }}</td>
                     <td>{{ $d->no_dok }}</td>
-                    <td>{{ $d->fpp1 }}</td>
-                    <td>{{ $d->pic }}</td>
+                    <td>{{ $d->spv }}</td>
+                    <td>{{ $d->kt }}</td>
+                    <td>{{ $d->ang_1 }}</td>
+                    <td>{{ $d->ang_2 }}</td>
                   </tr>
                 @endforeach
               </tbody>
@@ -124,7 +128,9 @@
                   <th>JUMLAH_KET (IDR)</th>
                   <th>SUMBER DOKUMEN</th>
                   <th>SUPERVISOR</th>
-                  <th>PIC</th>
+                  <th>KETUA TIM</th>
+                  <th>ANGGOTA 1</th>
+                  <th>ANGGOTA 2</th>
                 </tr>
               </thead>
               <tbody>
@@ -138,12 +144,14 @@
                     <td>{{ $d->pasal_skp }}</td>
                     <td>{{ $d->masa_1 }}-{{ $d->masa_2 }}/{{ $d->tahun_pajak }}</td>
                     <td>{{ $d->mata_uang }}</td>
-                    <td>{{ number_format($d->jumlah_ket) }}</td>
-                    <td>{{ number_format($d->kurs) }}</td>
-                    <td>{{ number_format($d->jumlah_ket_idr) }}</td>
+                    <td class="text-right">{{ number_format($d->jumlah_ket) }}</td>
+                    <td class="text-right">{{ number_format($d->kurs) }}</td>
+                    <td class="text-right">{{ number_format($d->jumlah_ket_idr) }}</td>
                     <td>{{ $d->no_dok }}</td>
-                    <td>{{ $d->fpp1 }}</td>
-                    <td>{{ $d->pic }}</td>
+                    <td>{{ $d->spv }}</td>
+                    <td>{{ $d->kt }}</td>
+                    <td>{{ $d->ang_1 }}</td>
+                    <td>{{ $d->ang_2 }}</td>
                   </tr>
                 @endforeach
               </tbody>
@@ -163,8 +171,9 @@
         scrollX: true,
         dom: 'Blfrtip',
         buttons: [
-          'copy',
-          'csvHtml5',
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5'
         ]
       });
     });
@@ -177,8 +186,9 @@
         scrollX: true,
         dom: 'Blfrtip',
         buttons: [
-          'copy',
-          'csvHtml5',
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5'
         ]
       });
     });

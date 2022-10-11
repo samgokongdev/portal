@@ -43,6 +43,9 @@ Route::resource('suratmasuk', SuratmasukController::class)->middleware('auth');
 Route::resource('tunggakan', TunggakanController::class)->middleware('auth');
 Route::get('jt',[TunggakanController::class, 'jt'])->name('tunggakan.jt')->middleware('auth');
 Route::get('np2belumterbit',[TunggakanController::class, 'np2belumterbit'])->name('tunggakan.np2belumterbit')->middleware('auth');
+Route::get('belumsppl',[TunggakanController::class, 'belumsppl'])->name('tunggakan.belumsppl')->middleware('auth');
+Route::get('sphpbulanini',[TunggakanController::class, 'sphpbulanini'])->name('tunggakan.sphpbulanini')->middleware('auth');
+Route::get('lhpbulanini',[TunggakanController::class, 'lhpbulanini'])->name('tunggakan.lhpbulanini')->middleware('auth');
 Route::get('rekaptunggakan',[TunggakanController::class, 'rekapTunggakanPerFpp'])->name('tunggakan.rekapTunggakanPerFpp')->middleware('auth');
 
 Route::resource('lhp', LhpPemeriksaanController::class)->middleware('auth');

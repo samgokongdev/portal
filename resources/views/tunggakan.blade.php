@@ -90,6 +90,7 @@
                     <th>Ketua Tim</th>
                     <th>Anggota 1</th>
                     <th>Anggota 2</th>
+                    <th>Keterangan</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,6 +144,7 @@
                           {{ $l->ang_2 }}
                         @endif
                       </td>
+                      <td>{{ $l->ket }}</td>
                     </tr>
                   @endforeach
                 </tbody>

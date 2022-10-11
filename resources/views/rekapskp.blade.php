@@ -44,19 +44,15 @@
               <!-- head -->
               <thead>
                 <tr>
-                  <th>KELOMPOK</th>
                   <th>PIC</th>
                   <th>SKPKB/SKPKBT/STP TERBIT (IDR)</th>
-                  <th>Detail</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($rekap_skpkb as $a)
                   <tr>
-                    <td>{{ $a->kelompok }}</td>
-                    <td>{{ $a->pic }}</td>
+                    <td>{{ $a->spv }}</td>
                     <td>{{ number_format($a->jumlah_ket_idr) }}</td>
-                    <td>{{ $a->pic }}</td>
                   </tr>
                 @endforeach
               </tbody>

@@ -36,6 +36,39 @@
         </div>
       </div>
 
+      <div class="stats bg-primary text-primary-content">
+        <div class="stat">
+          <div class="stat-title font-medium">SP2 Belum SPPL</div>
+          <div class="stat-value">{{ $belumsppl }} SP2</div>
+          <div class="stat-actions">
+            <button class="btn btn-sm btn-success"><a href="{{ route('tunggakan.belumsppl') }}">Lihat
+                Detail</a></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats bg-primary text-primary-content">
+        <div class="stat">
+          <div class="stat-title font-medium">SP2 Target SPHP Bulan ini</div>
+          <div class="stat-value">{{ $sphpbulanini }} SP2</div>
+          <div class="stat-actions">
+            <button class="btn btn-sm btn-success"><a href="{{ route('tunggakan.sphpbulanini') }}">Lihat
+                Detail</a></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats bg-primary text-primary-content">
+        <div class="stat">
+          <div class="stat-title font-medium">SP2 Target LHP Bulan ini</div>
+          <div class="stat-value">{{ $lhpbulanini }} SP2</div>
+          <div class="stat-actions">
+            <button class="btn btn-sm btn-success"><a href="{{ route('tunggakan.lhpbulanini') }}">Lihat
+                Detail</a></button>
+          </div>
+        </div>
+      </div>
+
       <div class="stats bg-red-900 text-white">
         <div class="stat">
           <div class="stat-title font-medium">Pemeriksaan JT < 14 hari</div>
